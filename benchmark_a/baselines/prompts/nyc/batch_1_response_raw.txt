@@ -1,0 +1,21 @@
+```json
+{
+  "spatial_near_water__586797.37,4514731.05_100__p0": "CALL spatial.withinDistance('features', point({x: 586797.37, y: 4514731.05, crs: 'cartesian'}), 0.1) YIELD node WHERE node:Building RETURN count(node) AS n",
+  "spatial_near_water__586625.2,4514296.54_50__p0": "CALL spatial.withinDistance('features', point({x: 586625.2, y: 4514296.54, crs: 'cartesian'}), 0.05) YIELD node WHERE node:Building RETURN count(node) AS n",
+  "spatial_near_water__586625.2,4514296.54_100__p0": "CALL spatial.withinDistance('features', point({x: 586625.2, y: 4514296.54, crs: 'cartesian'}), 0.1) YIELD node WHERE node:Building RETURN count(node) AS n",
+  "spatial_dense_pairs__POLYGON((584961.10984060__p0": "CALL spatial.intersects('features', 'POLYGON((584961.1098406042 4503451.940382095, 585461.1098406042 4503451.940382095, 585461.1098406042 4503951.940382095, 584961.1098406042 4503951.940382095, 584961.1098406042 4503451.940382095))') YIELD node WHERE node:Building WITH collect(node) AS buildings UNWIND range(0, size(buildings)-2) AS i UNWIND range(i+1, size(buildings)-1) AS j WITH buildings[i] AS a, buildings[j] AS b WHERE point.distance(a.location, b.location) < 10 RETURN count(*) AS n",
+  "spatial_dense_pairs__POLYGON((600285.58896561__p0": "CALL spatial.intersects('features', 'POLYGON((600285.588965618 4509971.027789716, 600785.588965618 4509971.027789716, 600785.588965618 4510471.027789716, 600285.588965618 4510471.027789716, 600285.588965618 4509971.027789716))') YIELD node WHERE node:Building WITH collect(node) AS buildings UNWIND range(0, size(buildings)-2) AS i UNWIND range(i+1, size(buildings)-1) AS j WITH buildings[i] AS a, buildings[j] AS b WHERE point.distance(a.location, b.location) < 10 RETURN count(*) AS n",
+  "xsrc_unenriched_gap__p0": "MATCH (b:Building) WHERE NOT (b)-[:ENRICHED_BY]->() RETURN count(b) AS n",
+  "xsrc_unenriched_gap__p1": "MATCH (b:Building) WHERE NOT (b)-[:ENRICHED_BY]->() RETURN count(b) AS n",
+  "xsrc_name_lookup__gml_9VU2QQEZXBEECCFYEK9W__p0": "MATCH (b:Building {id: 'gml_9VU2QQEZXBEECCFYEK9W36L5OXH7CFOPMV8T'}) RETURN b.osm_name AS name",
+  "xsrc_name_lookup__gml_IF7CC4MH7DQMH9BC10T6__p0": "MATCH (b:Building {id: 'gml_IF7CC4MH7DQMH9BC10T63Q9IO2B71ZGQ3UFY'}) RETURN b.osm_name AS name",
+  "xsrc_net_new_by_kind__p0": "MATCH (o:OsmFeature) WHERE o.matched = false RETURN o.osm_kind AS kind, count(o) AS n ORDER BY n DESC",
+  "prov_high_confidence__0.5__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.5 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.5__p1": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.5 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.8__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.8 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.8__p1": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.8 RETURN count(DISTINCT b) AS n",
+  "prov_match_cases__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() RETURN r.match_type AS match_type, count(*) AS n ORDER BY n DESC",
+  "prov_weakest_matches__5__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->(o) WHERE r.is_primary = true RETURN b.id AS building_id, r.jaccard AS jaccard ORDER BY r.jaccard ASC LIMIT 5",
+  "prov_weakest_matches__10__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->(o) WHERE r.is_primary = true RETURN b.id AS building_id, r.jaccard AS jaccard ORDER BY r.jaccard ASC LIMIT 10"
+}
+```

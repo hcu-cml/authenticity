@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Downloaded graph dumps and anything derived from them locally.
+# The dumps come from Zenodo (see dumps/README.md) and are far too large for git.
+docker/backups/*
+!docker/backups/.gitkeep
+docker/export/
+*.dump
+
+# Neo4j plugin JARs are fetched, not redistributed (see docker/plugins/README.md)
+docker/plugins/*.jar
+
+# Local exports from tools/export_tables.py
+export/
+*.parquet
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

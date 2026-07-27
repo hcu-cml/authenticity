@@ -1,0 +1,40 @@
+neo4j_tokyo_bcore_osm_20260717.dump
+Written by Neo4j 2025.10.1 (docker-neo4j image), the reference workstation, 2026-07-17.
+
+Contents: WHOLE TOKYO (23 special wards), B-core multi-module full stack, fresh clean-DB run.
+  CityGML: PLATEAU 2025 (v5), B-core modules only = bldg + tran + brid + frn + veg + wtr
+    (2,335 files); land use (luse), relief/terrain (dem), underground (uro) and the PLATEAU
+    ADE extensions (fld/htd/lsld/urf/area) are EXCLUDED by design (disproportionate scale for
+    the benchmark value). Source EPSG:6697 geographic degrees, reprojected to metric EPSG:6677
+    at ingest as Dataset 'tokyo' (--writers 16 --parse-workers 12).
+  Feature resolution: 2,980,839 source Building elements -> 2,005,762 distinct building nodes.
+    Ward-package tile replication resolved by content-hash / geometry-signature dedup:
+    975,077 byte/geometry-identical replicas deduplicated + 468 distinct-content same-id
+    features split onto synthesized ids (source_gml_id preserved). No BUILDING_LOSS.
+  Non-building CityObjects: 659,006 (Road 605,293, CityFurniture 38,231,
+    SolitaryVegetationObject 10,883, WaterBody 2,895, Bridge 968, PlantCover 735,
+    CityObjectGroup 1). 36,071 buildings carry measuredHeight = -9999 sentinels (kept
+    verbatim, excluded from stats).
+  Spatial index: buildings indexed in the CityGML 'features' R-tree during ingest; the 648,460
+    CityObjects that have geometry were bbox-indexed into the SAME 'features' layer POST-FUSION
+    (their footprints are computed from their own reprojected GeometryRing/GeometryLineString
+    pos_list because PLATEAU ships no per-feature gml:Envelope for these modules;
+    has_bbox_envelope=false for all CityObjects). 10,546 geometry-less point features
+    (SolitaryVegetationObject/PlantCover/CityObjectGroup) remain unindexed (no areal footprint).
+  + full OSM fusion of kanto-260703.osm.pbf clipped to the Tokyo bbox+buffer (3,830,408
+    OsmFeatures, own osm_features R-tree; relation multipolygons osm:relation/<id>, 19,542
+    relation nodes). Building-only matching (as all Tier-1 cities); CityObject footprints are
+    added after fusion so they never enter the matcher's candidate lookup.
+No ML/LoD3 layers (Tier 1). Census: PASSED (3,830,408/3,830,408). Report ID_COLLISIONS_RESOLVED
+(468 split, 975,077 dedup). Deep postcheck ID_COLLAPSE flag is a FALSE POSITIVE (273 genuinely
+large single buildings; top e.g. bldg_8f8402e5... unique gml:id, 6,591 boundary surfaces).
+CRS_RANGE_MISMATCH + HEIGHT_SENTINEL benign/expected. Store 99.2 GiB, dump 11.32 GiB.
+
+Verification counts:
+  nodes             74409400
+  rels              91949234
+  buildings         2005762   (source elements 2980839; 468 synthesized split; 975077 dedup)
+  CityObjects       659006
+  OsmFeatures       3830408
+  ENRICHED_BY       1390723
+  HAS_POI           91487

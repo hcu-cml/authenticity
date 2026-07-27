@@ -1,0 +1,31 @@
+neo4j_zurich_lod2_osm_20260716.dump
+Written by Neo4j 2025.10.1 (docker-neo4j image), the reference workstation, 2026-07-16.
+
+Contents: WHOLE ZURICH full stack, fresh clean-DB re-run on the the reference workstation the tiered
+identity resolution + the OSM relation/way id fix.
+  CityGML: 78 swissBUILDINGS3D 3.0 tiles (LoD2.3, EPSG:2056) merged into one Dataset 'zurich'
+    (--writers 16 --parse-workers 12). Identity resolution: 45 duplicate-id occurrences resolved:
+    40 split onto synthesized ids (source_gml_id preserved), 5 deduplicated (no-geometry ID_
+    placeholders). 102,668 distinct building nodes, no BUILDING_LOSS.
+  + full OSM fusion of switzerland-260704.osm.pbf (1,860,401 OsmFeatures, own osm_features
+    R-tree; relation multipolygons typed osm:relation/<id>: 4,670 relation nodes, 1,042,623 osm:way/*)
+No ML/LoD3 layers (Tier 1 city). Census: PASSED (1,860,401/1,860,401). Report cross-check
+ID_COLLISIONS_RESOLVED (40 split, 5 dedup). Deep postcheck ID_COLLAPSE flag is a FALSE POSITIVE
+(3 synthesized ID_-placeholder buildings that genuinely hold hundreds of building:part in one
+source <Building>, e.g. tile 1070-24: 312 parts / 916 boundaries; verified against source).
+NO_GEOMETRY (5) = the 5 no-geometry ID_ placeholders (source artifact, the dedup cases);
+OSM_HIGH_ORPHAN_RATE (94.5%) + VERTEX_COUNT_OUTLIER + OGRINFO_FAILED benign. Store 30.21 GiB,
+dump 5.57 GiB.
+
+Reproduces neo4j_zurich_lod2_osm_20260713.dump (nodes/rels differ by 379, ~0.0009%, from
+parallel-write variance + relation id retyping) but now carries the OSM relation/way id fix,
+superseding both the pre-fix 20260713 and the stale pre-identity-fix 20260711 dumps.
+
+Verification counts:
+  nodes             41508371
+  rels              45548405
+  buildings         102668
+  id_synthesized    40
+  OsmFeatures       1860401
+  ENRICHED_BY       100312
+  HAS_POI           13587

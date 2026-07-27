@@ -1,0 +1,468 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "AuthentiCity",
+  "alternateName": "AuthentiCity: Five Multi-Source, Provenance-Aware 3D City Knowledge Graphs",
+  "description": "A multi-source, provenance-aware 3D city knowledge graph spanning five cities on three continents (Hamburg, Helsinki, Zurich, New York, Tokyo): 179,571,139 nodes, 218,624,128 relationships, 1.18 billion properties and 3,583,114 buildings. Authoritative CityGML and cadastral city models are fused with OpenStreetMap, machine-learned roof-material predictions and reconstructed LoD3 facades into labeled property graphs in which every fact stays traceable to its source and derived information never replaces authoritative values. Cross-source correspondences are retained as confidence-weighted edges (overlap ratio, Jaccard, intersection area, 1:1/1:n/n:1/n:m case, primary flag) rather than collapsed into a single decision. Two benchmark families ship with the graphs: natural-language to Cypher (1,394 questions over 84 schema-grounded templates, nine categories, three languages, split by template into 1,024 public development and 370 held-out test questions) and graph representation learning under paired provenance-agnostic and provenance-aware protocols.",
+  "version": "1.0.0",
+  "datePublished": "2026-07-27",
+  "license": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "url": "https://github.com/hcu-cml/authenticity",
+  "sameAs": "https://doi.org/10.5281/zenodo.21547211",
+  "identifier": "https://doi.org/10.5281/zenodo.21547211",
+  "isLiveDataset": false,
+  "keywords": [
+    "3D city model",
+    "CityGML",
+    "knowledge graph",
+    "property graph",
+    "Neo4j",
+    "data provenance",
+    "data fusion",
+    "OpenStreetMap",
+    "urban digital twin",
+    "geospatial data",
+    "spatial reasoning",
+    "text-to-Cypher",
+    "graph representation learning",
+    "benchmark dataset"
+  ],
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Huynh Duc An Son Nguyen",
+      "email": "son.nguyen@hcu-hamburg.de",
+      "identifier": "https://orcid.org/0000-0001-8711-1587",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "HafenCity University Hamburg, Computational Methods Lab"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Lukas Arzoumanidis",
+      "identifier": "https://orcid.org/0000-0001-6668-1695",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "HafenCity University Hamburg, Computational Methods Lab"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Youness Dehbi",
+      "identifier": "https://orcid.org/0000-0003-0133-4099",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "HafenCity University Hamburg, Computational Methods Lab"
+      }
+    }
+  ],
+  "publisher": {
+    "@type": "sc:Organization",
+    "name": "Zenodo",
+    "url": "https://zenodo.org"
+  },
+  "citeAs": "@dataset{nguyen_authenticity_data_2026, author = {Nguyen, Huynh Duc An Son and Arzoumanidis, Lukas and Dehbi, Youness}, title = {{AuthentiCity}: Five Multi-Source, Provenance-Aware 3D City Knowledge Graphs (Neo4j Database Dumps)}, year = {2026}, publisher = {Zenodo}, version = {1.0.0}, doi = {10.5281/zenodo.21547211}, url = {https://doi.org/10.5281/zenodo.21547211}}",
+  "dataCollection": "Authoritative CityGML was downloaded from the open-government portals of five public agencies (LGV Hamburg 2025, Helsinki Region Infoshare 2019, swisstopo swissBUILDINGS3D 3.0, NYC Office of Technology and Innovation 2016, MLIT Project PLATEAU 2025). OpenStreetMap was obtained as regional Geofabrik extracts (2026-06-29, 2026-07-03, 2026-07-04) and clipped to each dataset bounding box plus a 10 m buffer. Roof-material predictions come from the authors' own imagery-based classifier and the LoD3 facades from the authors' own reconstruction, both for Hamburg only. Graphs were built by the open-source pykci pipeline; non-metric sources (New York in US survey feet, Tokyo in geographic degrees) were reprojected to a per-city metric CRS at ingest, and coordinates are otherwise stored verbatim. Every released graph passed a lossless CityGML round-trip census, an OpenStreetMap ingestion completeness census (all five cities: zero missing, zero extra features) and per-city statistical and anomaly control.",
+  "dataBiases": "Five cities in high-income economies with well-funded mapping agencies, selected because they publish open 3D city models; regions without such publication are absent. OpenStreetMap coverage follows contributor density, so the matched share ranges from 5.5 percent (Zurich) to 43.9 percent (New York). Attribute coverage is uneven by source design: roof type exists in two of five cities, building function in one, and the machine-learned and reconstructed layers in Hamburg only (roof material on 50.2 percent of its buildings, LoD3 on 17). Absence always means not covered, never a negative observation. The roof-material classifier was trained on OpenStreetMap labels, so OpenStreetMap-derived features leak information about that target and both protocol variants must be reported. Source vintages span 2016 to 2025 and are not harmonized.",
+  "personalSensitiveInformation": "None. Instances are buildings, not people, and all sources are public open data. Building addresses and points of interest appear only where the upstream sources publish them; no data subject is identified and no personal attribute is inferred. See ETHICS.md.",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "zenodo-record",
+      "name": "zenodo-record",
+      "description": "Zenodo archive holding the five Neo4j 2025.10.1 database dumps (26.91 GiB total) and their per-city count manifests. A dump loads only into Neo4j 2025.10.1 or newer.",
+      "contentUrl": "https://doi.org/10.5281/zenodo.21547211",
+      "encodingFormat": "application/octet-stream",
+      "sha256": "see the Zenodo record, which publishes a checksum per file"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "github-repository",
+      "name": "github-repository",
+      "description": "Code and benchmark repository: loaders, verification tools, the question suite, the evaluation harness, cached baseline outputs and the documentation.",
+      "contentUrl": "https://github.com/hcu-cml/authenticity",
+      "encodingFormat": "git+https"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "questions-dev",
+      "name": "questions-dev",
+      "description": "Public development split of Benchmark A: 1,024 questions over 59 templates, with gold Cypher queries, guard queries and materialized gold answers.",
+      "containedIn": {
+        "@id": "github-repository"
+      },
+      "contentUrl": "benchmark_a/questions/dev.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "questions-test",
+      "name": "questions-test",
+      "description": "Held-out test split of Benchmark A: 370 questions over 25 unseen templates, questions only. Gold queries and answers are withheld; runs are scored by the authors.",
+      "containedIn": {
+        "@id": "github-repository"
+      },
+      "contentUrl": "benchmark_a/questions/test.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "baseline-results",
+      "name": "baseline-results",
+      "description": "Cached per-question outcomes of the two reference models on all five cities and both splits, including the generated Cypher.",
+      "containedIn": {
+        "@id": "github-repository"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "benchmark_a/baselines/results/*.jsonl"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "development_questions",
+      "name": "development_questions",
+      "description": "One record per development question. The primary key is the pair (dataset, qid): a cross-city template instantiates once per city under the same qid.",
+      "key": [
+        {
+          "@id": "development_questions/dataset"
+        },
+        {
+          "@id": "development_questions/qid"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/qid",
+          "name": "qid",
+          "description": "Question identifier, unique within a city.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/dataset",
+          "name": "dataset",
+          "description": "Which city graph this instance belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/template_id",
+          "name": "template_id",
+          "description": "The schema-grounded template the question was generated from; this is the unit the dev and test splits are drawn on.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.template_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/category",
+          "name": "category",
+          "description": "One of aggregate, filter_topk, multihop, spatial, cross_source, provenance, coverage, lod3, infeasible.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/difficulty",
+          "name": "difficulty",
+          "description": "Authored difficulty, 1 to 5.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/feasible",
+          "name": "feasible",
+          "description": "False for the infeasible category, where the expected behavior is an explicit refusal.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.feasible"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/lang",
+          "name": "lang",
+          "description": "Question language: en, de or ja.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/question",
+          "name": "question",
+          "description": "The natural-language question given to the model.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/gold_cypher",
+          "name": "gold_cypher",
+          "description": "The gold Cypher query, with all literals inlined. Null for infeasible questions.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.gold_cypher"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/guard",
+          "name": "guard",
+          "description": "For infeasible questions, the query that proves on this city's graph that the requested information is absent (it must return a count of zero).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.guard"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/gold_answer",
+          "name": "gold_answer",
+          "description": "The canonicalized answer materialized against the released graph.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.gold_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "development_questions/gold_answer_sha1",
+          "name": "gold_answer_sha1",
+          "description": "SHA1 of the canonicalized gold answer, used to detect drift between the suite and a rebuilt graph.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-dev"
+            },
+            "extract": {
+              "jsonPath": "$.gold_answer_sha1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_questions",
+      "name": "test_questions",
+      "description": "One record per held-out test question. Same fields as the development split minus gold_cypher, guard, gold_answer and gold_answer_sha1, which are withheld.",
+      "key": [
+        {
+          "@id": "test_questions/dataset"
+        },
+        {
+          "@id": "test_questions/qid"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/qid",
+          "name": "qid",
+          "description": "Question identifier, unique within a city.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/dataset",
+          "name": "dataset",
+          "description": "Which city graph this instance belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/template_id",
+          "name": "template_id",
+          "description": "The template the question was generated from; no test template appears in the development split.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.template_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/category",
+          "name": "category",
+          "description": "One of the nine question categories.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/feasible",
+          "name": "feasible",
+          "description": "False for the infeasible category.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.feasible"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_questions/question",
+          "name": "question",
+          "description": "The natural-language question given to the model.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "questions-test"
+            },
+            "extract": {
+              "jsonPath": "$.question"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

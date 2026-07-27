@@ -1,0 +1,25 @@
+```json
+{
+  "agg_count_buildings__p0": "MATCH (b:Building) RETURN count(b) AS building_count",
+  "agg_count_buildings__p1": "MATCH (b:Building) RETURN count(b) AS building_count",
+  "agg_avg_height__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avg_height",
+  "agg_avg_height__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avg_height",
+  "agg_median_height__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN percentileCont(b.measured_height, 0.5) AS median_height",
+  "agg_dataset_extent__p0": "MATCH (d:Dataset) RETURN (d.bbox_max_x - d.bbox_min_x) / 1000.0 AS width_km, (d.bbox_max_y - d.bbox_min_y) / 1000.0 AS height_km",
+  "filter_taller_than__7.0__p0": "MATCH (b:Building) WHERE b.measured_height > 7.0 RETURN count(b) AS building_count",
+  "filter_taller_than__7.0__p1": "MATCH (b:Building) WHERE b.measured_height > 7.0 RETURN count(b) AS building_count",
+  "filter_taller_than__9.0__p0": "MATCH (b:Building) WHERE b.measured_height > 9.0 RETURN count(b) AS building_count",
+  "filter_taller_than__9.0__p1": "MATCH (b:Building) WHERE b.measured_height > 9.0 RETURN count(b) AS building_count",
+  "topk_tallest__5__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 5",
+  "topk_tallest__5__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 5",
+  "topk_tallest__10__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 10",
+  "topk_tallest__10__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 10",
+  "multihop_rooftype_distribution__p0": "REFUSE",
+  "multihop_rooftype_distribution__p1": "REFUSE",
+  "multihop_function_avg_height__p0": "REFUSE",
+  "multihop_building_parts__p0": "MATCH (b:Building)-[:HAS_BUILDING_PART]->(bp:BuildingPart) WITH b, count(bp) AS part_count WHERE part_count > 1 RETURN b.id AS building_id, part_count ORDER BY part_count DESC",
+  "multihop_boundary_census__ID___p0": "MATCH (b:Building {id: \"ID_\"})-[:HAS_BOUNDARY]->(bs:BoundarySurface) RETURN bs.surface_type AS surface_type, count(bs) AS count",
+  "multihop_boundary_census__ID_00001DB9-565B-4C0A-B2__p0": "MATCH (b:Building {id: \"ID_00001DB9-565B-4C0A-B2A4-6F856FEAEBA5\"})-[:HAS_BOUNDARY]->(bs:BoundarySurface) RETURN bs.surface_type AS surface_type, count(bs) AS count",
+  "spatial_bbox_agg__POLYGON((2668076.375_122__p0": "CALL spatial.intersects('features', 'POLYGON((2668076.375 1224001.7138999999, 2694352.789550001 1224001.7138999999, 2694352.789550001 1254014.7397499997, 2668076.375 1254014.7397499997, 2668076.375 1224001.7138999999))') YIELD node WHERE node:Building AND node.measured_height IS NOT NULL RETURN avg(node.measured_height) AS avg_height"
+}
+```

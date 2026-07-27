@@ -1,0 +1,31 @@
+neo4j_nyc_lod2_osm_20260716.dump
+Written by Neo4j 2025.10.1 (docker-neo4j image), the reference workstation, 2026-07-16.
+
+Contents: WHOLE NEW YORK full stack (5 boroughs, 20 DA tiles), fresh clean-DB re-run on the
+workstation.
+  CityGML: nyc_citygml2_mixed_lod1-2_2016_ns2upgraded/ (14 CityGML 1.0 tiles namespace-upgraded
+    to 2.0 via tools/upgrade_citygml_10_to_20.py, 6 already 2.0; 1,083,437 buildings, EPSG:2263
+    US feet reprojected to EPSG:32618 as Dataset 'nyc'; no dup ids -> 0 splits; no measuredHeight)
+    (--writers 16 --parse-workers 12)
+  + full OSM fusion of new-york-260703.osm.pbf (2,555,468 OsmFeatures, own osm_features R-tree;
+    relation multipolygons typed osm:relation/<id>: 5,492 relation nodes)
+No ML/LoD3 layers (Tier 1 city). Census: PASSED (2,555,468/2,555,468). Deep postcheck ID_COLLAPSE
+flag is a FALSE POSITIVE (51 genuinely large single buildings; precheck found 0 duplicate gml:ids,
+so a unique id cannot be a collapse; e.g. DA19 building with 3,433 boundaries / 0 parts). No
+BUILDING_LOSS: 1,083,437 source ids = 1,083,437 graph nodes. OGRINFO_FAILED benign.
+Store 31.90 GiB, dump 6.81 GiB.
+
+NOTE: the deferred single-transaction CityGML R-tree pass OOMed at this scale (1.08M buildings >
+dbms.memory.transaction.total.max ~11.2 GiB). Fixed in ingest_citygml._index_features_spatial
+(serial id-indexed batches of 25k); the R-tree here was rebuilt with the batched path (1,083,437
+entries, bbox queries verified). Reproduces neo4j_nyc_lod2_osm_20260714.dump (nodes/rels differ
+by 200, ~0.0004%; OsmFeatures/ENRICHED_BY/HAS_POI/relation counts identical).
+
+Verification counts:
+  nodes             45797985
+  rels              54207134
+  buildings         1083437
+  id_synthesized    0
+  OsmFeatures       2555468
+  ENRICHED_BY       1078893
+  HAS_POI           52449

@@ -1,0 +1,26 @@
+neo4j_helsinki_lod2_osm_20260716.dump
+Written by Neo4j 2025.10.1 (docker-neo4j image), the reference workstation, 2026-07-16.
+
+Contents: WHOLE HELSINKI (pilot == full run) re-run on a clean DB with the tiered identity
+resolution + gen-attr collision fix + the OSM relation/way id fix.
+  CityGML: helsinki_citygml2_lod2_2019.gml (2,980 buildings + 31 bridges, EPSG:3879, LoD2;
+    61 duplicate-id groups split onto synthesized ids, source_gml_id preserved; 0 deduplicated;
+    no BUILDING_LOSS: 2,980 distinct building nodes)
+  + full OSM fusion of finland-260704.osm.pbf (55,930 OsmFeatures, own osm_features R-tree;
+    relation multipolygons typed osm:relation/<id>: 304 relation nodes, 23,220 osm:way/*)
+No ML/LoD3 layers (Tier 1 city). Census: PASSED (55,930/55,930). Postcheck: source-level
+DUPLICATE_GML_ID (61) RESOLVED (report ID_COLLISIONS_RESOLVED: 61 split, 0 dedup);
+OSM_HIGH_ORPHAN_RATE (92.3%) + OGRINFO_FAILED benign. Store 0.28 GiB, dump 0.15 GiB.
+
+Reproduces neo4j_helsinki_lod2_osm_20260713.dump exactly (same nodes/rels/counts) but now
+carries the OSM relation/way id fix, superseding the pre-fix 20260713 dump.
+
+Verification counts:
+  nodes             414459
+  rels              619964
+  buildings         2980
+  id_synthesized    61
+  bridges           31
+  OsmFeatures       55930
+  ENRICHED_BY       3011
+  HAS_POI           1797

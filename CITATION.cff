@@ -1,0 +1,78 @@
+cff-version: 1.2.0
+message: "If you use AuthentiCity, please cite the dataset (Zenodo DOI) and the accompanying paper."
+title: "AuthentiCity: Five Multi-Source, Provenance-Aware 3D City Knowledge Graphs"
+abstract: >-
+  AuthentiCity is a multi-source, provenance-aware 3D city knowledge graph
+  spanning five cities on three continents (Hamburg, Helsinki, Zurich, New York,
+  Tokyo): 179.6 M nodes, 218.6 M relationships, 1.18 B properties and 3.58 M
+  buildings. It fuses authoritative CityGML and cadastral city models with
+  OpenStreetMap, machine-learned roof-material predictions, and reconstructed
+  LoD3 facades into labeled property graphs in which every fact stays traceable
+  to its source and derived information never replaces authoritative values.
+  Cross-source correspondences are retained as confidence-weighted edges rather
+  than collapsed. Two benchmark families ship with the data: natural-language to
+  Cypher (1,394 questions, 84 templates, nine categories, three languages) and
+  graph representation learning under provenance-agnostic and provenance-aware
+  protocols.
+type: dataset
+version: 1.0.0
+date-released: "2026-07-27"
+doi: 10.5281/zenodo.21547211
+license: ODbL-1.0
+license-url: "https://opendatacommons.org/licenses/odbl/1-0/"
+url: "https://github.com/hcu-cml/authenticity"
+repository-code: "https://github.com/hcu-cml/authenticity"
+authors:
+  - family-names: Nguyen
+    given-names: Huynh Duc An Son
+    orcid: "https://orcid.org/0000-0001-8711-1587"
+    email: son.nguyen@hcu-hamburg.de
+    affiliation: "HafenCity University Hamburg, Computational Methods Lab"
+  - family-names: Arzoumanidis
+    given-names: Lukas
+    orcid: "https://orcid.org/0000-0001-6668-1695"
+    affiliation: "HafenCity University Hamburg, Computational Methods Lab"
+  - family-names: Dehbi
+    given-names: Youness
+    orcid: "https://orcid.org/0000-0003-0133-4099"
+    affiliation: "HafenCity University Hamburg, Computational Methods Lab"
+keywords:
+  - 3D city model
+  - CityGML
+  - knowledge graph
+  - property graph
+  - Neo4j
+  - data provenance
+  - data fusion
+  - OpenStreetMap
+  - urban digital twin
+  - geospatial data
+  - spatial reasoning
+  - text-to-Cypher
+  - graph representation learning
+  - benchmark dataset
+references:
+  - type: software
+    title: "pykci: Python Knowledge Graph for Cities"
+    notes: "The construction pipeline that builds the AuthentiCity graphs."
+    repository-code: "https://github.com/hcu-cml/pykci"
+    license: MIT
+    authors:
+      - family-names: Nguyen
+        given-names: Huynh Duc An Son
+      - family-names: Arzoumanidis
+        given-names: Lukas
+      - family-names: Dehbi
+        given-names: Youness
+  - type: article
+    title: "pykci: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using LLMs"
+    year: 2026
+    url: "https://arxiv.org/abs/2607.01605"
+    notes: "arXiv:2607.01605; companion system paper describing the mapping pipeline."
+    authors:
+      - family-names: Nguyen
+        given-names: Huynh Duc An Son
+      - family-names: Arzoumanidis
+        given-names: Lukas
+      - family-names: Dehbi
+        given-names: Youness

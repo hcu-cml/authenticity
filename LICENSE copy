@@ -1,0 +1,52 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Huynh Duc An Son Nguyen, Lukas Arzoumanidis, Youness Dehbi
+HafenCity University Hamburg, Computational Methods Lab
+
+WHAT THIS FILE COVERS
+---------------------
+This license applies to the material this project authored itself:
+
+  * the benchmark question suite (question text, gold Cypher queries,
+    guard queries, materialized gold answers, splits, template inventory),
+  * the verification and quality reports under benchmark_a/verification/
+    and quality/,
+  * the cached baseline outputs, prompts, and model responses under
+    benchmark_a/baselines/,
+  * the per-city schema descriptions under schema/,
+  * all documentation in this repository, including README.md,
+    datasheet.md, and everything under docs/.
+
+WHAT THIS FILE DOES NOT COVER
+-----------------------------
+  * The five released Neo4j graph dumps and any substantial extract of
+    them: those are under the Open Database License 1.0 (ODbL-1.0), and
+    each upstream source additionally keeps its own license. See
+    DATA_LICENSES.md.
+  * Software in this repository (benchmark_a/harness/, tools/, docker/):
+    MIT, see LICENSE-CODE.
+
+Note that question files quote values read from the released graphs. Where
+such quoted content amounts to a substantial extract of a graph, the ODbL
+terms in DATA_LICENSES.md apply to that extract as well.
+
+YOUR OBLIGATIONS IN SHORT
+-------------------------
+You may share and adapt this material for any purpose, including
+commercially, provided you give appropriate credit, link to the license,
+and indicate whether changes were made. Suggested credit:
+
+  AuthentiCity v1.0.0 (Nguyen, Arzoumanidis, Dehbi, 2026),
+  DOI 10.5281/zenodo.21547211, CC BY 4.0.
+
+FULL LEGAL TEXT
+---------------
+The complete, authoritative legal code of CC BY 4.0 is published at:
+
+  https://creativecommons.org/licenses/by/4.0/legalcode
+
+A human-readable summary (not a substitute for the license) is at:
+
+  https://creativecommons.org/licenses/by/4.0/
+
+By using this material you accept the terms of the license linked above.

@@ -1,0 +1,30 @@
+# AuthentiCity: Python dependencies for the release tools and the benchmark harness.
+#
+#   python -m venv .venv
+#   .venv\Scripts\activate          (Windows)   |   source .venv/bin/activate  (Linux, macOS)
+#   pip install -r requirements.txt
+#
+# Python 3.11 or newer. Nothing here is needed to simply restore a dump and
+# query it in the Neo4j Browser.
+
+# --- required: every tool and the harness talk to Neo4j over Bolt -------------
+neo4j>=5.28
+
+# --- optional: Parquet output from tools/export_tables.py ---------------------
+# Without it the exporter writes CSV instead.
+pyarrow
+
+# --- Benchmark A harness ------------------------------------------------------
+# evaluate_model.py always needs langchain-neo4j (it reads the graph schema
+# through it), including when re-scoring cached outputs with --pregenerated.
+# The two backend packages are needed only for a live model run.
+langchain-neo4j        # graph wrapper used for schema access
+langchain-ollama       # local open-weight backend  (--backend ollama)
+langchain-anthropic    # commercial backend         (--backend anthropic, needs ANTHROPIC_API_KEY)
+
+# --- not listed here ----------------------------------------------------------
+# Rebuilding a graph from its CityGML and OpenStreetMap sources needs the pykci
+# pipeline and its dependencies (lxml, pyproj, shapely, plus the GDAL ogr2ogr
+# CLI on PATH): https://github.com/hcu-cml/pykci
+# The representation-learning benchmark needs PyTorch and PyTorch Geometric;
+# see benchmark_b/README.md.

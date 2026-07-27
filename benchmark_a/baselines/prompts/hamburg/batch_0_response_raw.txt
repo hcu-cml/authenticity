@@ -1,0 +1,29 @@
+```json
+{
+  "agg_count_buildings__p0": "MATCH (b:Building) RETURN count(b) AS buildingCount",
+  "agg_count_buildings__p1": "MATCH (b:Building) RETURN count(b) AS buildingCount",
+  "agg_avg_height__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avgHeight",
+  "agg_avg_height__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avgHeight",
+  "agg_median_height__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN percentileCont(b.measured_height, 0.5) AS medianHeight",
+  "agg_dataset_extent__p0": "MATCH (d:Dataset) RETURN d.name AS dataset, (d.bbox_max_x - d.bbox_min_x) / 1000.0 AS width_km, (d.bbox_max_y - d.bbox_min_y) / 1000.0 AS height_km",
+  "filter_taller_than__3.0__p0": "MATCH (b:Building) WHERE b.measured_height > 3.0 RETURN count(b) AS buildingCount",
+  "filter_taller_than__3.0__p1": "MATCH (b:Building) WHERE b.measured_height > 3.0 RETURN count(b) AS buildingCount",
+  "filter_taller_than__8.0__p0": "MATCH (b:Building) WHERE b.measured_height > 8.0 RETURN count(b) AS buildingCount",
+  "filter_taller_than__8.0__p1": "MATCH (b:Building) WHERE b.measured_height > 8.0 RETURN count(b) AS buildingCount",
+  "topk_tallest__5__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.name AS name, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 5",
+  "topk_tallest__5__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.name AS name, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 5",
+  "topk_tallest__10__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.name AS name, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 10",
+  "topk_tallest__10__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL RETURN b.id AS id, b.name AS name, b.measured_height AS height ORDER BY b.measured_height DESC LIMIT 10",
+  "filter_by_function__31001_1130__p0": "MATCH (b:Building) WHERE b.function_code = '31001_1130' RETURN count(b) AS buildingCount",
+  "filter_by_function__31001_1210__p0": "MATCH (b:Building) WHERE b.function_code = '31001_1210' RETURN count(b) AS buildingCount",
+  "filter_compound__3.0_Flat_Roof__p0": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) WHERE b.measured_height > 3.0 AND rt.name = 'Flat Roof' RETURN count(b) AS buildingCount",
+  "filter_compound__3.0_Gable_Roof__p0": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) WHERE b.measured_height > 3.0 AND rt.name = 'Gable Roof' RETURN count(b) AS buildingCount",
+  "filter_compound__8.0_Flat_Roof__p0": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) WHERE b.measured_height > 8.0 AND rt.name = 'Flat Roof' RETURN count(b) AS buildingCount",
+  "filter_compound__8.0_Gable_Roof__p0": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) WHERE b.measured_height > 8.0 AND rt.name = 'Gable Roof' RETURN count(b) AS buildingCount",
+  "multihop_rooftype_distribution__p0": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) RETURN rt.name AS roofType, count(b) AS buildingCount ORDER BY buildingCount DESC",
+  "multihop_rooftype_distribution__p1": "MATCH (b:Building)-[:HAS_ROOF_TYPE]->(rt:RoofType) RETURN rt.name AS roofType, count(b) AS buildingCount ORDER BY buildingCount DESC",
+  "multihop_function_avg_height__p0": "MATCH (b:Building)-[:HAS_FUNCTION]->(f:BuildingFunction) WHERE b.measured_height IS NOT NULL RETURN f.name AS function, avg(b.measured_height) AS avgHeight ORDER BY avgHeight DESC",
+  "multihop_building_parts__p0": "REFUSE",
+  "multihop_boundary_census__DEHHALKA100002LW__p0": "MATCH (b:Building {id: 'DEHHALKA100002LW'})-[:HAS_BOUNDARY]->(bs:BoundarySurface) RETURN bs.surface_type AS surfaceType, count(bs) AS surfaceCount ORDER BY surfaceCount DESC"
+}
+```

@@ -1,0 +1,174 @@
+You are an isolated Cypher-generation endpoint being used as one model
+in a closed-book NL-to-Cypher benchmark evaluation. You are simulating a plain
+LLM API call that receives ONLY the text below and returns text -- nothing else.
+
+HARD CONSTRAINTS (violating any of these invalidates the whole benchmark run):
+- Do NOT use ANY tool: no Read, no Grep, no Glob, no Bash, no Write, no Edit,
+  no web search, nothing. Do not look at the repository. Do not look at the
+  live Neo4j database. Do not attempt to verify your answer by running it.
+- Base every answer SOLELY on the "Graph schema" text given below in this
+  prompt and the question text. Do not assume any node label, relationship
+  type, or property that is not explicitly listed in that schema text.
+- This is the exact same schema text every other model being evaluated in
+  this benchmark receives -- do not supplement it with anything else.
+
+Neo4j Cypher rules for THIS graph:
+- For a bounding-box/window query use: CALL spatial.intersects('features', wkt) YIELD node
+- For a radius query use: CALL spatial.withinDistance('features', point, distanceKm) YIELD node
+- Never scan-filter on center_x/center_y; always use the spatial procedures above.
+- OSM-derived fields are namespaced `osm_*` (e.g. osm_height, osm_building_levels) and
+  must NEVER be confused with the authoritative field they mirror (e.g. measured_height,
+  storeys_above_ground). Use the authoritative field unless the question explicitly asks
+  about OSM/crowd-sourced data.
+- `predictedroofmaterial` is a partial-coverage ML prediction (not every building has one);
+  a question about coverage or "how many/what share" must account for that, not just count
+  matches.
+- If, and only if, a question asks for information that DOES NOT EXIST anywhere in this
+  graph's schema (the schema below is complete -- nothing else is stored), the answer for
+  that qid is exactly the single word REFUSE. Do not refuse just because a query might
+  return zero rows; only refuse when the requested fact has no place to live in this schema.
+- Otherwise the answer for that qid is ONLY the Cypher query text. No explanation, no
+  markdown code fences, no commentary.
+
+Graph schema:
+Node properties:
+Entity {source: STRING, id: STRING, surface_type: STRING, _gen_attrs_map: STRING, bin: STRING, doitt_id: STRING, source_id: STRING, lod: STRING, osm_best_jaccard: FLOAT, osm_match_count: INTEGER, osm_match_type: STRING, bbox: LIST, osm_building: STRING, osm_height: STRING, center_y: FLOAT, center_x: FLOAT, gml_name: STRING, gtype: INTEGER, bbox_min_y: FLOAT, bbox_min_x: FLOAT, bbox_min_z: FLOAT, bbox_max_x: FLOAT, ground_z: FLOAT, description: STRING, has_bbox_envelope: BOOLEAN, bbox_wkt: STRING, bbox_upper_corner: STRING, bbox_lower_corner: STRING, bbox_max_z: FLOAT, name: STRING, bbox_max_y: FLOAT, location: POINT, addr_postcode: STRING, addr_street: STRING, osm_amenity: STRING, osm_name: STRING, osm_operator: STRING, addr_city: STRING, osm_roof_shape: STRING, osm_roof_material: STRING, osm_building_levels: STRING, unmatched_reason: STRING, other_tags: STRING, osm_id: STRING, matched: BOOLEAN, osm_type: STRING, osm_kind: STRING, osm_leisure: STRING, addr_housenumber: STRING, osm_landuse: STRING, osm_natural: STRING, osm_highway: STRING, osm_shop: STRING}
+Building {osm_best_jaccard: FLOAT, osm_match_type: STRING, bbox: LIST, osm_building: STRING, osm_height: STRING, osm_match_count: INTEGER, center_y: FLOAT, center_x: FLOAT, gml_name: STRING, gtype: INTEGER, bbox_min_y: FLOAT, bbox_min_x: FLOAT, source_id: STRING, bbox_min_z: FLOAT, bbox_max_x: FLOAT, ground_z: FLOAT, description: STRING, has_bbox_envelope: BOOLEAN, doitt_id: STRING, bbox_wkt: STRING, bbox_upper_corner: STRING, bbox_lower_corner: STRING, bbox_max_z: FLOAT, bin: STRING, name: STRING, bbox_max_y: FLOAT, _gen_attrs_map: STRING, source: STRING, id: STRING, location: POINT, addr_street: STRING, addr_postcode: STRING, osm_building_levels: STRING, addr_city: STRING, osm_name: STRING, osm_amenity: STRING, osm_shared: BOOLEAN, osm_roof_material: STRING, osm_roof_shape: STRING, osm_operator: STRING}
+BoundarySurface {surface_type: STRING, source: STRING, id: STRING, _gen_attrs_map: STRING, bin: STRING, doitt_id: STRING, source_id: STRING, lod: STRING}
+GeometryPolygon {source: STRING, id: STRING}
+GeometryRing {pos_list: STRING, srs_dimension: INTEGER, ring_type: STRING, source: STRING, id: STRING}
+GeometryLineString {source: STRING, srs_dimension: INTEGER, id: STRING, pos_list: STRING}
+Dataset {bbox_upper_corner: STRING, bbox_max_z: FLOAT, bbox_max_y: FLOAT, bbox_lower_corner: STRING, bbox_min_x: FLOAT, bbox_max_x: FLOAT, bbox_min_z: FLOAT, bbox_min_y: FLOAT, source_crs: STRING, srs_dimension: INTEGER, format: STRING, crs: STRING, name: STRING, id: STRING, source: STRING, lod: STRING}
+City {id: STRING, name: STRING}
+District {id: STRING, name: STRING}
+SpatialLayer {extraProp.description: STRING, extraProp.bbox_upper_corner: STRING, extraProp.bin: STRING, extraProp.center_x: STRING, extraProp.center_y: STRING, extraProp.gml_name: STRING, extraProp.source_id: STRING, extraProp.name: STRING, extraProp.doitt_id: STRING, extraProp.bbox_max_x: STRING, extraProp.ground_z: STRING, extraProp.has_bbox_envelope: STRING, extraProp.bbox_lower_corner: STRING, extraProp._gen_attrs_map: STRING, extraProp.bbox_max_z: STRING, extraProp.bbox_max_y: STRING, extraProp.bbox_min_x: STRING, extraProp.bbox_min_y: STRING, extraProp.bbox_min_z: STRING, extraProp.id: STRING, extraProp.source: STRING, layerprops: LIST, layer_class: STRING, geomencoder_config: STRING, extraProp.location: STRING, layer: STRING, geomencoder: STRING, index_class: STRING, extraProp.osm_building_levels_underground: STRING, extraProp.osm_office: STRING, extraProp.osm_building: STRING, extraProp.osm_highway: STRING, extraProp.osm_landuse: STRING, extraProp.osm_shop: STRING, extraProp.osm_railway: STRING, extraProp.osm_building_levels: STRING, extraProp.osm_id: STRING, extraProp.osm_start_date: STRING, extraProp.osm_amenity: STRING, extraProp.osm_natural: STRING, extraProp.osm_water: STRING, extraProp.osm_roof_material: STRING, extraProp.addr_street: STRING, extraProp.osm_operator: STRING, extraProp.other_tags: STRING, extraProp.osm_tourism: STRING, extraProp.addr_postcode: STRING, extraProp.osm_roof_shape: STRING, extraProp.osm_height: STRING, extraProp.addr_country: STRING, extraProp.osm_leisure: STRING, extraProp.addr_city: STRING, extraProp.osm_man_made: STRING, extraProp.matched: STRING, extraProp.osm_kind: STRING, extraProp.osm_type: STRING, extraProp.addr_housenumber: STRING, extraProp.osm_waterway: STRING}
+OsmFeature {unmatched_reason: STRING, matched: BOOLEAN, bbox_wkt: STRING, gtype: INTEGER, bbox: LIST, bbox_max_y: FLOAT, osm_water: STRING, location: POINT, osm_natural: STRING, source: STRING, osm_type: STRING, id: STRING, osm_kind: STRING, center_x: FLOAT, osm_id: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, other_tags: STRING, osm_leisure: STRING, addr_street: STRING, addr_postcode: STRING, addr_housenumber: STRING, addr_city: STRING, name: STRING, osm_waterway: STRING, osm_landuse: STRING, osm_building: STRING, osm_height: STRING, osm_building_levels: STRING, osm_roof_shape: STRING, osm_roof_material: STRING, osm_start_date: STRING, osm_amenity: STRING, osm_operator: STRING, osm_shop: STRING, osm_highway: STRING, osm_railway: STRING, osm_office: STRING, osm_tourism: STRING}
+OsmWater {gtype: INTEGER, bbox: LIST, unmatched_reason: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, other_tags: STRING, matched: BOOLEAN, bbox_max_x: FLOAT, bbox_wkt: STRING, bbox_max_y: FLOAT, osm_type: STRING, name: STRING, osm_natural: STRING, location: POINT, osm_water: STRING, source: STRING, osm_kind: STRING, id: STRING, osm_id: STRING, osm_start_date: STRING, osm_amenity: STRING, osm_operator: STRING, osm_man_made: STRING, osm_tourism: STRING, osm_height: STRING, osm_leisure: STRING, osm_waterway: STRING}
+OsmLandUse {unmatched_reason: STRING, osm_landuse: STRING, gtype: INTEGER, bbox: LIST, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_operator: STRING, osm_type: STRING, bbox_max_x: FLOAT, bbox_max_y: FLOAT, osm_kind: STRING, name: STRING, bbox_wkt: STRING, location: POINT, other_tags: STRING, source: STRING, matched: BOOLEAN, id: STRING, osm_id: STRING, addr_street: STRING, addr_housenumber: STRING, addr_postcode: STRING, osm_height: STRING, osm_start_date: STRING, osm_amenity: STRING, osm_natural: STRING, osm_man_made: STRING, addr_city: STRING, osm_leisure: STRING, osm_highway: STRING}
+OsmBuilding {gtype: INTEGER, bbox: LIST, osm_building: STRING, addr_street: STRING, center_x: FLOAT, addr_city: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_min_y: FLOAT, addr_postcode: STRING, osm_building_levels: STRING, bbox_max_x: FLOAT, osm_height: STRING, addr_housenumber: STRING, bbox_max_y: FLOAT, osm_type: STRING, osm_id: STRING, osm_kind: STRING, location: POINT, bbox_wkt: STRING, source: STRING, other_tags: STRING, id: STRING, matched: BOOLEAN, osm_office: STRING, name: STRING, osm_roof_shape: STRING, unmatched_reason: STRING, osm_roof_material: STRING, osm_start_date: STRING, osm_tourism: STRING, osm_amenity: STRING, osm_operator: STRING}
+OsmVegetation {gtype: INTEGER, bbox: LIST, unmatched_reason: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_leisure: STRING, bbox_max_x: FLOAT, bbox_wkt: STRING, bbox_max_y: FLOAT, osm_kind: STRING, osm_id: STRING, name: STRING, location: POINT, other_tags: STRING, source: STRING, matched: BOOLEAN, id: STRING, osm_type: STRING, osm_operator: STRING, osm_highway: STRING, osm_natural: STRING, addr_city: STRING, osm_landuse: STRING, addr_street: STRING, addr_postcode: STRING, osm_start_date: STRING, osm_tourism: STRING, addr_housenumber: STRING}
+OsmRoad {unmatched_reason: STRING, other_tags: STRING, bbox_wkt: STRING, gtype: INTEGER, bbox: LIST, osm_id: STRING, bbox_max_y: FLOAT, location: POINT, matched: BOOLEAN, source: STRING, osm_type: STRING, id: STRING, osm_kind: STRING, center_x: FLOAT, osm_highway: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, osm_railway: STRING, osm_operator: STRING, name: STRING, osm_man_made: STRING}
+OsmPOI {bbox: LIST, osm_amenity: STRING, bbox_wkt: STRING, gtype: INTEGER, bbox_max_y: FLOAT, osm_type: STRING, location: POINT, other_tags: STRING, source: STRING, matched: BOOLEAN, id: STRING, osm_kind: STRING, center_x: FLOAT, osm_id: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, unmatched_reason: STRING, addr_street: STRING, addr_city: STRING, addr_housenumber: STRING, addr_postcode: STRING, name: STRING, osm_operator: STRING, osm_height: STRING, osm_shop: STRING, osm_tourism: STRING, osm_office: STRING, addr_country: STRING, osm_start_date: STRING}
+OsmFurniture {unmatched_reason: STRING, other_tags: STRING, bbox_max_y: FLOAT, bbox: LIST, osm_id: STRING, osm_kind: STRING, location: POINT, gtype: INTEGER, source: STRING, bbox_wkt: STRING, id: STRING, matched: BOOLEAN, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, bbox_max_x: FLOAT, osm_man_made: STRING, osm_type: STRING, name: STRING, osm_leisure: STRING, osm_natural: STRING, osm_height: STRING, osm_operator: STRING}
+Relationship properties:
+HAS_BOUNDARY {order: INTEGER}
+HAS_POLYGON {via_xlink: BOOLEAN, order: INTEGER}
+HAS_INTERIOR_RING {ring_index: INTEGER}
+HAS_FOOTPRINT {order: INTEGER}
+HAS_LOD_SURFACE {order: INTEGER}
+ENRICHED_BY {intersection_area: FLOAT, match_type: STRING, is_primary: BOOLEAN, overlap_ratio: FLOAT, jaccard: FLOAT}
+HAS_POI {distance_m: FLOAT}
+The relationships:
+(:Entity)-[:HAS_EXTERIOR_RING]->(:GeometryRing)
+(:Entity)-[:HAS_POLYGON]->(:Entity)
+(:Entity)-[:HAS_POLYGON]->(:GeometryPolygon)
+(:Entity)-[:ENRICHED_BY]->(:Entity)
+(:Entity)-[:ENRICHED_BY]->(:OsmFeature)
+(:Entity)-[:ENRICHED_BY]->(:OsmBuilding)
+(:Entity)-[:HAS_BOUNDARY]->(:Entity)
+(:Entity)-[:HAS_BOUNDARY]->(:BoundarySurface)
+(:Entity)-[:PART_OF]->(:Dataset)
+(:Entity)-[:LOCATED_IN]->(:District)
+(:Entity)-[:HAS_POI]->(:Entity)
+(:Entity)-[:HAS_POI]->(:OsmFeature)
+(:Entity)-[:HAS_POI]->(:OsmPOI)
+(:Entity)-[:HAS_FOOTPRINT]->(:Entity)
+(:Entity)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:Entity)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:Building)-[:ENRICHED_BY]->(:Entity)
+(:Building)-[:ENRICHED_BY]->(:OsmFeature)
+(:Building)-[:ENRICHED_BY]->(:OsmBuilding)
+(:Building)-[:ENRICHED_BY]->(:OsmPOI)
+(:Building)-[:HAS_BOUNDARY]->(:Entity)
+(:Building)-[:HAS_BOUNDARY]->(:BoundarySurface)
+(:Building)-[:PART_OF]->(:Dataset)
+(:Building)-[:LOCATED_IN]->(:District)
+(:Building)-[:HAS_POI]->(:Entity)
+(:Building)-[:HAS_POI]->(:OsmFeature)
+(:Building)-[:HAS_POI]->(:OsmPOI)
+(:BoundarySurface)-[:HAS_POLYGON]->(:Entity)
+(:BoundarySurface)-[:HAS_POLYGON]->(:GeometryPolygon)
+(:GeometryPolygon)-[:HAS_EXTERIOR_RING]->(:GeometryRing)
+(:Dataset)-[:COVERS]->(:District)
+(:District)-[:PART_OF]->(:City)
+(:OsmFeature)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmFeature)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmFeature)-[:PART_OF]->(:Dataset)
+(:OsmFeature)-[:LOCATED_IN]->(:District)
+(:OsmFeature)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:OsmWater)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmWater)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmWater)-[:PART_OF]->(:Dataset)
+(:OsmWater)-[:LOCATED_IN]->(:District)
+(:OsmLandUse)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmLandUse)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmLandUse)-[:PART_OF]->(:Dataset)
+(:OsmLandUse)-[:LOCATED_IN]->(:District)
+(:OsmBuilding)-[:PART_OF]->(:Dataset)
+(:OsmBuilding)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmBuilding)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmBuilding)-[:LOCATED_IN]->(:District)
+(:OsmVegetation)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmVegetation)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmVegetation)-[:PART_OF]->(:Dataset)
+(:OsmVegetation)-[:LOCATED_IN]->(:District)
+(:OsmRoad)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmRoad)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmRoad)-[:PART_OF]->(:Dataset)
+(:OsmRoad)-[:LOCATED_IN]->(:District)
+(:OsmRoad)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:OsmPOI)-[:PART_OF]->(:Dataset)
+(:OsmPOI)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmPOI)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmPOI)-[:LOCATED_IN]->(:District)
+(:OsmFurniture)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmFurniture)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmFurniture)-[:PART_OF]->(:Dataset)
+(:OsmFurniture)-[:LOCATED_IN]->(:District)
+
+Known additional relationship (present in the graph, omitted above due to
+schema-introspection sampling on rare relationship types):
+(:Building)-[:HAS_LOD3_FACADE]->(:BoundarySurface)  -- the target node is ALSO
+  labelled :Lod3Facade; reconstructed LoD3 facade detail (windows/doors via
+  a further -[:HAS_OPENING]->(:Opening {opening_type: 'Window'|'Door'}) hop)
+  attaches here, NOT via the ordinary HAS_BOUNDARY edge (which stays LoD2-only
+  and is never overwritten, per the project's provenance design).
+
+Known additional Building properties (present in the graph, omitted above due
+to schema-introspection sampling on rare properties -- only a small minority
+of buildings carry LoD3 reconstruction):
+Building.lod3_confidence: FLOAT  -- reconstruction confidence, 0-1
+Building.lod3_method: STRING     -- reconstruction method name
+Building.lod3_source: STRING     -- provenance source identifier
+
+TASK: Below are several INDEPENDENT questions about this graph. Answer each one
+independently and identically to how you would if it were the only question you'd
+ever seen -- do not let earlier questions in this list influence your answer to a
+later one beyond the shared schema/rules above.
+
+Return your answer as ONE raw JSON object (no markdown fences, no commentary
+before or after it) mapping each qid to its answer string, e.g.:
+{"qid1": "MATCH (b:Building) RETURN count(b) AS n", "qid2": "REFUSE"}
+
+Questions:
+- qid="filter_missing_height__p0": How many buildings have no recorded height?
+- qid="multihop_district_counts__p0": How many buildings are located in each district?
+- qid="spatial_bbox_count__POLYGON((563089.37507543__p0": How many buildings lie inside the bounding box POLYGON((563089.3750754362 4483353.736483538, 586412.655668248 4483353.736483538, 586412.655668248 4506694.387437572, 563089.3750754362 4506694.387437572, 563089.3750754362 4483353.736483538))?
+- qid="spatial_bbox_count__POLYGON((563089.37507543__p1": Count the buildings whose footprint intersects the window POLYGON((563089.3750754362 4483353.736483538, 586412.655668248 4483353.736483538, 586412.655668248 4506694.387437572, 563089.3750754362 4506694.387437572, 563089.3750754362 4483353.736483538)).
+- qid="spatial_bbox_count__POLYGON((586412.65566824__p0": How many buildings lie inside the bounding box POLYGON((586412.655668248 4506694.387437572, 609735.9362610596 4506694.387437572, 609735.9362610596 4530035.038391606, 586412.655668248 4530035.038391606, 586412.655668248 4506694.387437572))?
+- qid="spatial_bbox_count__POLYGON((586412.65566824__p1": Count the buildings whose footprint intersects the window POLYGON((586412.655668248 4506694.387437572, 609735.9362610596 4506694.387437572, 609735.9362610596 4530035.038391606, 586412.655668248 4530035.038391606, 586412.655668248 4506694.387437572)).
+- qid="spatial_roof_complexity__5__p0": Which 5 buildings have the most roof polygons?
+- qid="spatial_roof_complexity__10__p0": Which 10 buildings have the most roof polygons?
+- qid="spatial_isolated__POLYGON((584961.10984060__p0": Within the window POLYGON((584961.1098406042 4503451.940382095, 585461.1098406042 4503451.940382095, 585461.1098406042 4503951.940382095, 584961.1098406042 4503951.940382095, 584961.1098406042 4503451.940382095)), how many buildings have no other building within 100 meters?
+- qid="spatial_isolated__POLYGON((600285.58896561__p0": Within the window POLYGON((600285.588965618 4509971.027789716, 600785.588965618 4509971.027789716, 600785.588965618 4510471.027789716, 600285.588965618 4510471.027789716, 600285.588965618 4509971.027789716)), how many buildings have no other building within 100 meters?
+- qid="xsrc_pois_in_building__gml_GN8NMRP1EO7N7IUN84E2__p0": Which points of interest are located inside building gml_GN8NMRP1EO7N7IUN84E2PKUDRNZNNH8K3W36?
+- qid="xsrc_pois_in_building__gml_5UIJ8C1OFN6XG9PMFR6G__p0": Which points of interest are located inside building gml_5UIJ8C1OFN6XG9PMFR6GQM6EY3NPOP3SEO1Y?
+- qid="xsrc_reverse_gap__p0": How many OSM buildings have no cadastral counterpart?
+- qid="prov_multi_matched__p0": How many buildings are matched by two or more OSM features?
+- qid="prov_secondary_edges__p0": How many non-primary correspondence edges does the fusion graph keep?
+- qid="inf_layer_absent_city__gml_0004F7HL773S7RHQKNZZ__p0": What roof material is predicted for building gml_0004F7HL773S7RHQKNZZBQHZE6XZCCY12H7I?
+- qid="inf_layer_absent_city__gml_0006DE955I2I8YDHQLQY__p0": What roof material is predicted for building gml_0006DE955I2I8YDHQLQYJ9QQCW2WR114YJ8H?
+- qid="inf_interior_lod__gml_0004F7HL773S7RHQKNZZ__p0": How many rooms does building gml_0004F7HL773S7RHQKNZZBQHZE6XZCCY12H7I have?
+- qid="inf_interior_lod__gml_0006DE955I2I8YDHQLQY__p0": How many rooms does building gml_0006DE955I2I8YDHQLQYJ9QQCW2WR114YJ8H have?
+
+JSON answer:

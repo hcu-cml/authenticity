@@ -1,0 +1,32 @@
+neo4j_hamburg_lod2_roofmats_lod3_osm_20260717.dump
+Written by Neo4j 2025.10.1 (docker-neo4j image), the reference workstation, 2026-07-17.
+
+Contents: WHOLE HAMBURG full stack, rebuilt from the PLAIN CityGML with roof materials
+as a SEPARATE provenance-aware layer (supersedes neo4j_hamburg_lod2_roofmats_lod3_osm_20260716.dump,
+which used the baked-roofmats GML). Layer order: CityGML -> OSM -> roof materials -> LoD3.
+  CityGML: hamburg_citygml2_lod2_2025.gml (388,267 buildings, EPSG:25832, LoD2; NO baked-in
+    roof materials; id-clean, 0 splits).
+  + full OSM fusion of hamburg-260629.osm.pbf (1,188,139 OsmFeatures, own osm_features R-tree;
+    relation multipolygons osm:relation/<id>, 2,418 relation nodes).
+  + ML roof materials from input/geojson/hamburg_roofmats_with_citygml_footprints_2025.geojson
+    via ingest_roof_materials.py, matched by gml:id (no spatial matching): 194,799 buildings
+    (50.17% coverage) carry coverage-ranked predicted_roof_material_<i>(_coverage) scalars +
+    predicted_roof_material_source = ml:roof_material:hamburg_roofmats_with_citygml_footprints_2025
+    + the compat key predictedroofmaterial (= primary). 570 buildings carry >1 material.
+    Primary-material distribution: roof_tiles 108653, tar_paper 51325, concrete 22905,
+    metal 8666, glass 3250.
+  + LoD3 facades: hamburg_citygml2_lod3_facades_holes_export.gml (17/17 anchors enriched).
+Census: PASSED (1,188,139/1,188,139). Deep postcheck ID_COLLAPSE (4) is a FALSE POSITIVE
+  (genuinely large single buildings, gml:id unique in source); SPATIAL_OUTLIER (92, whole-city
+  extent) + OGRINFO_FAILED benign. Conflict: dual-sourced ML-vs-OSM roof:material 3,641,
+  height 3,404, storeys 144,364. Store 14.77 GiB, dump 3.07 GiB.
+
+Verification counts:
+  nodes             17440924
+  rels              26299391
+  buildings         388267
+  roofmat_predicted 194799   (source tag ml:roof_material:...; coverage-ranked, provenance-aware)
+  lod3_enriched     17
+  OsmFeatures       1188139
+  ENRICHED_BY       373211
+  HAS_POI           22219

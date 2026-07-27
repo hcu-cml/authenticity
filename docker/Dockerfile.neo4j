@@ -1,0 +1,19 @@
+# Neo4j pinned to the version that wrote the AuthentiCity dumps.
+# A dump loads only into this version or a newer one.
+FROM neo4j:2025.10.1
+
+COPY conf/neo4j.conf /var/lib/neo4j/conf/neo4j.conf
+COPY conf/apoc.conf  /var/lib/neo4j/conf/apoc.conf
+
+# Plugin JARs are not redistributed here; fetch them into ./plugins first
+# (see plugins/README.md). The wildcard keeps the build working when only
+# some of them are present.
+COPY plugins/ /var/lib/neo4j/plugins/
+
+RUN chown -R neo4j:neo4j /var/lib/neo4j/conf/ /var/lib/neo4j/plugins/ \
+    && chmod 640 /var/lib/neo4j/conf/neo4j.conf /var/lib/neo4j/conf/apoc.conf \
+    && chmod 644 /var/lib/neo4j/plugins/*.jar 2>/dev/null || true
+
+EXPOSE 7474 7687
+
+USER neo4j

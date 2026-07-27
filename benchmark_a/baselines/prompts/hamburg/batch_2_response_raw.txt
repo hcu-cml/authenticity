@@ -1,0 +1,29 @@
+```json
+{
+  "xsrc_height_disagreement__3__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL AND b.osm_height IS NOT NULL WITH b, toFloat(b.osm_height) AS osmH WHERE osmH IS NOT NULL AND abs(osmH - b.measured_height) > 3 RETURN b.id AS building_id, b.measured_height AS measured_height, osmH AS osm_height, abs(osmH - b.measured_height) AS diff ORDER BY diff DESC",
+  "xsrc_height_disagreement__3__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL AND b.osm_height IS NOT NULL WITH b, toFloat(b.osm_height) AS osmH WHERE osmH IS NOT NULL AND abs(osmH - b.measured_height) > 3 RETURN b.id AS building_id, b.measured_height AS measured_height, osmH AS osm_height, abs(osmH - b.measured_height) AS diff ORDER BY diff DESC",
+  "xsrc_height_disagreement__5__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL AND b.osm_height IS NOT NULL WITH b, toFloat(b.osm_height) AS osmH WHERE osmH IS NOT NULL AND abs(osmH - b.measured_height) > 5 RETURN b.id AS building_id, b.measured_height AS measured_height, osmH AS osm_height, abs(osmH - b.measured_height) AS diff ORDER BY diff DESC",
+  "xsrc_height_disagreement__5__p1": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL AND b.osm_height IS NOT NULL WITH b, toFloat(b.osm_height) AS osmH WHERE osmH IS NOT NULL AND abs(osmH - b.measured_height) > 5 RETURN b.id AS building_id, b.measured_height AS measured_height, osmH AS osm_height, abs(osmH - b.measured_height) AS diff ORDER BY diff DESC",
+  "xsrc_unenriched_gap__p0": "MATCH (b:Building) WHERE NOT (b)-[:ENRICHED_BY]->() RETURN count(b) AS unenriched_count",
+  "xsrc_unenriched_gap__p1": "MATCH (b:Building) WHERE NOT (b)-[:ENRICHED_BY]->() RETURN count(b) AS unenriched_count",
+  "xsrc_name_lookup__DEHHALKAP0000ptF__p0": "MATCH (b:Building {id: 'DEHHALKAP0000ptF'}) RETURN b.osm_name AS osm_name",
+  "xsrc_name_lookup__DEHHALKAn0007rkM__p0": "MATCH (b:Building {id: 'DEHHALKAn0007rkM'}) RETURN b.osm_name AS osm_name",
+  "xsrc_agreement_rate__p0": "MATCH (b:Building) WHERE b.measured_height IS NOT NULL AND b.osm_height IS NOT NULL WITH b, toFloat(b.osm_height) AS osmH WHERE osmH IS NOT NULL WITH count(*) AS total, sum(CASE WHEN abs(osmH - b.measured_height) <= 1 THEN 1 ELSE 0 END) AS agree RETURN agree, total, toFloat(agree)/total AS agreement_rate",
+  "xsrc_net_new_by_kind__p0": "MATCH (o) WHERE (o:OsmFeature OR o:OsmWater OR o:OsmVegetation OR o:OsmBuilding OR o:OsmLandUse OR o:OsmRoad OR o:OsmPOI OR o:OsmFurniture) AND o.matched = false RETURN o.osm_kind AS kind, count(*) AS n ORDER BY n DESC",
+  "prov_high_confidence__0.5__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.5 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.5__p1": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.5 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.8__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.8 RETURN count(DISTINCT b) AS n",
+  "prov_high_confidence__0.8__p1": "MATCH (b:Building)-[r:ENRICHED_BY]->() WHERE r.is_primary = true AND r.jaccard >= 0.8 RETURN count(DISTINCT b) AS n",
+  "prov_match_cases__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->() RETURN r.match_type AS match_type, count(*) AS n ORDER BY n DESC",
+  "prov_source_qualified_value__DEHHALKA3Wd0002L__p0": "MATCH (b:Building {id: 'DEHHALKA3Wd0002L'}) RETURN b.measured_height AS authoritative_measured_height, b.measured_height_uom AS measured_height_uom, b.osm_height AS osm_height",
+  "prov_source_qualified_value__DEHHALKAn0007rgq__p0": "MATCH (b:Building {id: 'DEHHALKAn0007rgq'}) RETURN b.measured_height AS authoritative_measured_height, b.measured_height_uom AS measured_height_uom, b.osm_height AS osm_height",
+  "prov_weakest_matches__5__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->(o) WHERE r.is_primary = true AND r.jaccard IS NOT NULL RETURN b.id AS building_id, o.id AS osm_id, r.jaccard AS jaccard, r.overlap_ratio AS overlap_ratio ORDER BY r.jaccard ASC LIMIT 5",
+  "prov_weakest_matches__10__p0": "MATCH (b:Building)-[r:ENRICHED_BY]->(o) WHERE r.is_primary = true AND r.jaccard IS NOT NULL RETURN b.id AS building_id, o.id AS osm_id, r.jaccard AS jaccard, r.overlap_ratio AS overlap_ratio ORDER BY r.jaccard ASC LIMIT 10",
+  "cov_material_avg_height__concrete__p0": "MATCH (b:Building) WHERE b.predictedroofmaterial = 'concrete' AND b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avg_height, count(b) AS n",
+  "cov_material_avg_height__glass__p0": "MATCH (b:Building) WHERE b.predictedroofmaterial = 'glass' AND b.measured_height IS NOT NULL RETURN avg(b.measured_height) AS avg_height, count(b) AS n",
+  "cov_trap_citywide__concrete__p0": "MATCH (b:Building) WHERE b.predictedroofmaterial = 'concrete' RETURN count(b) AS n",
+  "cov_trap_citywide__glass__p0": "MATCH (b:Building) WHERE b.predictedroofmaterial = 'glass' RETURN count(b) AS n",
+  "cov_by_district__p0": "MATCH (b:Building)-[:LOCATED_IN]->(d:District) WITH d, count(b) AS total, sum(CASE WHEN b.predictedroofmaterial IS NOT NULL THEN 1 ELSE 0 END) AS predicted RETURN d.name AS district, predicted, total, toFloat(predicted)/total AS coverage ORDER BY district",
+  "lod3_window_count__DEHHALKA4Ti000DB__p0": "MATCH (b:Building {id: 'DEHHALKA4Ti000DB'})-[:HAS_LOD3_FACADE]->(f:Lod3Facade)-[:HAS_OPENING]->(o:Opening {opening_type: 'Window'}) RETURN count(DISTINCT o) AS window_count"
+}
+```

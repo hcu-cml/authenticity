@@ -1,0 +1,107 @@
+Node properties:
+Entity {id: STRING, source: STRING, surface_type: STRING, datum_aenderung: STRING, dach_min: STRING, lod: STRING, original_herkunft: STRING, gen_predicate: STRING, datum_erstellung: STRING, herkunft: STRING, grund_aenderung: STRING, revision_jahr: STRING, erstellung_monat: STRING, herkunft_monat: STRING, revision_monat: STRING, dach_max: STRING, herkunft_jahr: STRING, _gen_attrs_map: STRING, erstellung_jahr: STRING, osm_building: STRING, osm_roof_shape: STRING, osm_match_type: STRING, osm_shared: BOOLEAN, osm_best_jaccard: FLOAT, osm_building_levels: STRING, osm_match_count: INTEGER, gtype: INTEGER, bbox: LIST, measured_height: FLOAT, objektart: STRING, egid: STRING, gelaendepunkt: STRING, measured_height_uom: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, ground_z: FLOAT, bbox_min_z: FLOAT, has_bbox_envelope: BOOLEAN, bbox_max_x: FLOAT, bbox_wkt: STRING, bbox_upper_corner: STRING, bbox_lower_corner: STRING, bbox_max_y: FLOAT, bbox_max_z: FLOAT, location: POINT, description: STRING, name: STRING, composite_surface_id: STRING, addr_street: STRING, unmatched_reason: STRING, osm_id: STRING, osm_landuse: STRING, osm_kind: STRING, osm_type: STRING, matched: BOOLEAN, addr_country: STRING, addr_housenumber: STRING, other_tags: STRING, addr_city: STRING, addr_postcode: STRING, osm_shop: STRING, osm_roof_material: STRING, osm_start_date: STRING, osm_natural: STRING, osm_man_made: STRING, osm_leisure: STRING, osm_waterway: STRING, osm_highway: STRING, osm_operator: STRING, osm_amenity: STRING}
+Building {osm_building: STRING, osm_name: STRING, osm_match_type: STRING, bbox: LIST, osm_best_jaccard: FLOAT, osm_match_count: INTEGER, erstellung_monat: STRING, dach_min: STRING, gtype: INTEGER, measured_height: FLOAT, datum_aenderung: STRING, original_herkunft: STRING, gen_predicate: STRING, datum_erstellung: STRING, herkunft: STRING, revision_jahr: STRING, objektart: STRING, gelaendepunkt: STRING, grund_aenderung: STRING, herkunft_jahr: STRING, revision_monat: STRING, dach_max: STRING, egid: STRING, erstellung_jahr: STRING, measured_height_uom: STRING, herkunft_monat: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, ground_z: FLOAT, bbox_min_z: FLOAT, has_bbox_envelope: BOOLEAN, bbox_max_x: FLOAT, bbox_wkt: STRING, bbox_upper_corner: STRING, bbox_lower_corner: STRING, bbox_max_y: FLOAT, bbox_max_z: FLOAT, location: POINT, description: STRING, id: STRING, source: STRING, name: STRING, _gen_attrs_map: STRING, osm_roof_shape: STRING, addr_street: STRING, osm_building_levels: STRING, addr_city: STRING, addr_postcode: STRING, osm_shared: BOOLEAN, osm_roof_material: STRING, osm_height: STRING, osm_amenity: STRING, osm_operator: STRING, usage_code: STRING}
+BuildingPart {dach_min: STRING, measured_height: FLOAT, datum_aenderung: STRING, original_herkunft: STRING, gen_predicate: STRING, datum_erstellung: STRING, herkunft: STRING, objektart: STRING, grund_aenderung: STRING, revision_jahr: STRING, erstellung_monat: STRING, revision_monat: STRING, dach_max: STRING, gelaendepunkt: STRING, herkunft_jahr: STRING, erstellung_jahr: STRING, measured_height_uom: STRING, herkunft_monat: STRING, id: STRING, source: STRING, name: STRING, _gen_attrs_map: STRING}
+BoundarySurface {surface_type: STRING, datum_aenderung: STRING, dach_min: STRING, lod: STRING, original_herkunft: STRING, gen_predicate: STRING, datum_erstellung: STRING, herkunft: STRING, grund_aenderung: STRING, revision_jahr: STRING, erstellung_monat: STRING, herkunft_monat: STRING, revision_monat: STRING, dach_max: STRING, herkunft_jahr: STRING, id: STRING, source: STRING, _gen_attrs_map: STRING, erstellung_jahr: STRING, objektart: STRING, gml_name: STRING}
+GeometryPolygon {id: STRING, source: STRING}
+GeometryRing {id: STRING, source: STRING, pos_list: STRING, srs_dimension: INTEGER, ring_type: STRING}
+GeometrySolid {id: STRING, source: STRING, lod: STRING, composite_surface_id: STRING}
+GeometryLineString {source: STRING, id: STRING, pos_list: STRING, srs_dimension: INTEGER}
+Dataset {bbox_max_x: FLOAT, bbox_upper_corner: STRING, bbox_max_z: FLOAT, bbox_max_y: FLOAT, bbox_min_x: FLOAT, bbox_min_z: FLOAT, bbox_min_y: FLOAT, gml_name: STRING, bbox_lower_corner: STRING, format: STRING, crs: STRING, source: STRING, srs_dimension: INTEGER, lod: STRING, name: STRING, id: STRING}
+City {id: STRING, name: STRING}
+District {id: STRING, name: STRING}
+SpatialLayer {extraProp.center_x: STRING, extraProp.center_y: STRING, extraProp.dach_min: STRING, extraProp.erstellung_monat: STRING, extraProp.gml_name: STRING, extraProp.datum_aenderung: STRING, extraProp.name: STRING, extraProp.measured_height: STRING, extraProp.gen_predicate: STRING, extraProp.bbox_max_x: STRING, extraProp.ground_z: STRING, extraProp.original_herkunft: STRING, extraProp.herkunft: STRING, extraProp.has_bbox_envelope: STRING, extraProp.datum_erstellung: STRING, extraProp.objektart: STRING, extraProp._gen_attrs_map: STRING, extraProp.bbox_lower_corner: STRING, extraProp.revision_jahr: STRING, extraProp.bbox_max_z: STRING, extraProp.bbox_max_y: STRING, extraProp.herkunft_jahr: STRING, extraProp.bbox_min_x: STRING, extraProp.bbox_min_y: STRING, extraProp.grund_aenderung: STRING, extraProp.bbox_min_z: STRING, extraProp.id: STRING, extraProp.egid: STRING, extraProp.gelaendepunkt: STRING, extraProp.revision_monat: STRING, extraProp.dach_max: STRING, extraProp.usage_code: STRING, extraProp.measured_height_uom: STRING, extraProp.herkunft_monat: STRING, extraProp.source: STRING, extraProp.id_synthesized: STRING, extraProp.description: STRING, extraProp.source_gml_id: STRING, extraProp.bbox_upper_corner: STRING, extraProp.erstellung_jahr: STRING, layerprops: LIST, layer_class: STRING, geomencoder_config: STRING, extraProp.location: STRING, layer: STRING, geomencoder: STRING, index_class: STRING, extraProp.osm_water: STRING, extraProp.osm_highway: STRING, extraProp.osm_building_levels_underground: STRING, extraProp.addr_country: STRING, extraProp.osm_office: STRING, extraProp.osm_waterway: STRING, extraProp.osm_shop: STRING, extraProp.osm_roof_material: STRING, extraProp.osm_building: STRING, extraProp.osm_railway: STRING, extraProp.osm_roof_shape: STRING, extraProp.osm_building_levels: STRING, extraProp.addr_city: STRING, extraProp.osm_man_made: STRING, extraProp.matched: STRING, extraProp.osm_landuse: STRING, extraProp.osm_kind: STRING, extraProp.osm_type: STRING, extraProp.addr_housenumber: STRING, extraProp.osm_id: STRING, extraProp.osm_start_date: STRING, extraProp.osm_amenity: STRING, extraProp.osm_natural: STRING, extraProp.addr_street: STRING, extraProp.osm_operator: STRING, extraProp.osm_tourism: STRING, extraProp.addr_postcode: STRING, extraProp.osm_height: STRING, extraProp.osm_leisure: STRING, extraProp.other_tags: STRING}
+OsmFeature {gtype: INTEGER, bbox: LIST, unmatched_reason: STRING, osm_id: STRING, bbox_max_x: FLOAT, location: POINT, bbox_wkt: STRING, osm_landuse: STRING, bbox_max_y: FLOAT, source: STRING, id: STRING, other_tags: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_kind: STRING, osm_type: STRING, matched: BOOLEAN, osm_natural: STRING, name: STRING, osm_leisure: STRING, osm_operator: STRING, addr_street: STRING, osm_building: STRING, addr_country: STRING, addr_housenumber: STRING, addr_postcode: STRING, addr_city: STRING, osm_roof_material: STRING, osm_roof_shape: STRING, osm_building_levels: STRING, osm_amenity: STRING, osm_start_date: STRING, osm_man_made: STRING, osm_height: STRING, osm_water: STRING, osm_waterway: STRING, osm_highway: STRING, osm_railway: STRING, osm_shop: STRING, osm_office: STRING, osm_tourism: STRING}
+OsmVegetation {bbox: LIST, unmatched_reason: STRING, osm_id: STRING, bbox_max_x: FLOAT, location: POINT, gtype: INTEGER, osm_landuse: STRING, bbox_max_y: FLOAT, source: STRING, id: STRING, bbox_wkt: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_kind: STRING, osm_type: STRING, matched: BOOLEAN, other_tags: STRING, name: STRING, osm_natural: STRING, osm_leisure: STRING, addr_city: STRING, osm_amenity: STRING, addr_postcode: STRING, osm_operator: STRING, addr_street: STRING}
+OsmBuilding {unmatched_reason: STRING, osm_kind: STRING, gtype: INTEGER, bbox: LIST, center_x: FLOAT, osm_id: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, bbox_max_y: FLOAT, osm_type: STRING, bbox_wkt: STRING, location: POINT, addr_country: STRING, addr_street: STRING, osm_building: STRING, source: STRING, id: STRING, addr_housenumber: STRING, matched: BOOLEAN, addr_postcode: STRING, addr_city: STRING, osm_start_date: STRING, other_tags: STRING, name: STRING, osm_amenity: STRING, osm_office: STRING, osm_roof_shape: STRING, osm_building_levels: STRING, osm_roof_material: STRING, osm_operator: STRING, osm_leisure: STRING, osm_height: STRING, osm_shop: STRING}
+OsmFurniture {unmatched_reason: STRING, bbox_max_x: FLOAT, gtype: INTEGER, bbox: LIST, bbox_max_y: FLOAT, osm_id: STRING, location: POINT, bbox_wkt: STRING, source: STRING, id: STRING, other_tags: STRING, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_kind: STRING, osm_type: STRING, matched: BOOLEAN, osm_man_made: STRING, osm_natural: STRING, name: STRING, osm_operator: STRING, osm_height: STRING, addr_city: STRING, addr_postcode: STRING, addr_country: STRING, osm_start_date: STRING}
+OsmWater {unmatched_reason: STRING, osm_type: STRING, bbox: LIST, center_x: FLOAT, osm_kind: STRING, gtype: INTEGER, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, name: STRING, osm_id: STRING, location: POINT, bbox_wkt: STRING, source: STRING, id: STRING, osm_water: STRING, other_tags: STRING, matched: BOOLEAN, osm_natural: STRING, bbox_max_y: FLOAT, osm_amenity: STRING, osm_operator: STRING, addr_street: STRING, osm_leisure: STRING, addr_city: STRING, addr_postcode: STRING, osm_landuse: STRING, osm_start_date: STRING, osm_man_made: STRING, osm_building_levels_underground: STRING}
+OsmLandUse {bbox: LIST, unmatched_reason: STRING, bbox_max_x: FLOAT, bbox_wkt: STRING, gtype: INTEGER, bbox_max_y: FLOAT, osm_id: STRING, other_tags: STRING, osm_landuse: STRING, location: POINT, source: STRING, id: STRING, matched: BOOLEAN, center_y: FLOAT, center_x: FLOAT, bbox_min_y: FLOAT, bbox_min_x: FLOAT, osm_kind: STRING, osm_type: STRING, name: STRING, osm_operator: STRING, osm_start_date: STRING, addr_street: STRING, osm_amenity: STRING, addr_postcode: STRING, addr_city: STRING, addr_housenumber: STRING, osm_leisure: STRING}
+OsmRoad {unmatched_reason: STRING, osm_type: STRING, gtype: INTEGER, bbox: LIST, center_x: FLOAT, osm_id: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, name: STRING, bbox_max_y: FLOAT, location: POINT, osm_kind: STRING, source: STRING, id: STRING, bbox_wkt: STRING, matched: BOOLEAN, other_tags: STRING, osm_railway: STRING, osm_highway: STRING, osm_operator: STRING, osm_start_date: STRING}
+OsmPOI {unmatched_reason: STRING, gtype: INTEGER, bbox: LIST, center_x: FLOAT, osm_id: STRING, bbox_min_x: FLOAT, center_y: FLOAT, bbox_max_x: FLOAT, bbox_min_y: FLOAT, name: STRING, osm_type: STRING, location: POINT, osm_kind: STRING, source: STRING, id: STRING, bbox_wkt: STRING, osm_operator: STRING, bbox_max_y: FLOAT, matched: BOOLEAN, other_tags: STRING, osm_amenity: STRING, addr_street: STRING, addr_housenumber: STRING, osm_tourism: STRING, osm_shop: STRING, addr_city: STRING, addr_postcode: STRING, osm_leisure: STRING, addr_country: STRING, osm_office: STRING, osm_start_date: STRING, osm_height: STRING}
+Relationship properties:
+HAS_BOUNDARY {order: INTEGER}
+HAS_SURFACE_MEMBER {order: INTEGER, via_xlink: BOOLEAN}
+HAS_POLYGON {order: INTEGER, via_xlink: BOOLEAN}
+HAS_BUILDING_PART {order: INTEGER}
+HAS_FOOTPRINT {order: INTEGER}
+HAS_INTERIOR_RING {ring_index: INTEGER}
+HAS_LOD_SURFACE {order: INTEGER}
+ENRICHED_BY {intersection_area: FLOAT, match_type: STRING, is_primary: BOOLEAN, overlap_ratio: FLOAT, jaccard: FLOAT}
+HAS_POI {distance_m: FLOAT}
+The relationships:
+(:Entity)-[:HAS_EXTERIOR_RING]->(:GeometryRing)
+(:Entity)-[:HAS_POLYGON]->(:Entity)
+(:Entity)-[:HAS_POLYGON]->(:GeometryPolygon)
+(:Entity)-[:HAS_SURFACE_MEMBER]->(:Entity)
+(:Entity)-[:HAS_SURFACE_MEMBER]->(:GeometryPolygon)
+(:Entity)-[:ENRICHED_BY]->(:Entity)
+(:Entity)-[:ENRICHED_BY]->(:OsmFeature)
+(:Entity)-[:ENRICHED_BY]->(:OsmBuilding)
+(:Entity)-[:HAS_LOD_SOLID]->(:Entity)
+(:Entity)-[:HAS_LOD_SOLID]->(:GeometrySolid)
+(:Entity)-[:HAS_BOUNDARY]->(:Entity)
+(:Entity)-[:HAS_BOUNDARY]->(:BoundarySurface)
+(:Entity)-[:LOCATED_IN]->(:District)
+(:Entity)-[:PART_OF]->(:Dataset)
+(:Entity)-[:HAS_FOOTPRINT]->(:Entity)
+(:Entity)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:Entity)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:Building)-[:HAS_LOD_SOLID]->(:Entity)
+(:Building)-[:HAS_LOD_SOLID]->(:GeometrySolid)
+(:Building)-[:HAS_BOUNDARY]->(:Entity)
+(:Building)-[:HAS_BOUNDARY]->(:BoundarySurface)
+(:Building)-[:LOCATED_IN]->(:District)
+(:Building)-[:PART_OF]->(:Dataset)
+(:Building)-[:ENRICHED_BY]->(:Entity)
+(:Building)-[:ENRICHED_BY]->(:OsmFeature)
+(:Building)-[:ENRICHED_BY]->(:OsmBuilding)
+(:Building)-[:ENRICHED_BY]->(:OsmPOI)
+(:Building)-[:HAS_POI]->(:Entity)
+(:Building)-[:HAS_POI]->(:OsmFeature)
+(:Building)-[:HAS_POI]->(:OsmPOI)
+(:Building)-[:HAS_BUILDING_PART]->(:Entity)
+(:Building)-[:HAS_BUILDING_PART]->(:BuildingPart)
+(:BuildingPart)-[:HAS_LOD_SOLID]->(:Entity)
+(:BuildingPart)-[:HAS_LOD_SOLID]->(:GeometrySolid)
+(:BoundarySurface)-[:HAS_POLYGON]->(:Entity)
+(:BoundarySurface)-[:HAS_POLYGON]->(:GeometryPolygon)
+(:GeometryPolygon)-[:HAS_EXTERIOR_RING]->(:GeometryRing)
+(:GeometrySolid)-[:HAS_SURFACE_MEMBER]->(:Entity)
+(:GeometrySolid)-[:HAS_SURFACE_MEMBER]->(:GeometryPolygon)
+(:Dataset)-[:COVERS]->(:District)
+(:District)-[:PART_OF]->(:City)
+(:OsmFeature)-[:LOCATED_IN]->(:District)
+(:OsmFeature)-[:PART_OF]->(:Dataset)
+(:OsmFeature)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmFeature)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmFeature)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:OsmVegetation)-[:LOCATED_IN]->(:District)
+(:OsmVegetation)-[:PART_OF]->(:Dataset)
+(:OsmVegetation)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmVegetation)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmBuilding)-[:LOCATED_IN]->(:District)
+(:OsmBuilding)-[:PART_OF]->(:Dataset)
+(:OsmBuilding)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmBuilding)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmFurniture)-[:LOCATED_IN]->(:District)
+(:OsmFurniture)-[:PART_OF]->(:Dataset)
+(:OsmFurniture)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmFurniture)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmWater)-[:LOCATED_IN]->(:District)
+(:OsmWater)-[:PART_OF]->(:Dataset)
+(:OsmWater)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmWater)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmLandUse)-[:LOCATED_IN]->(:District)
+(:OsmLandUse)-[:PART_OF]->(:Dataset)
+(:OsmLandUse)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmLandUse)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmRoad)-[:LOCATED_IN]->(:District)
+(:OsmRoad)-[:PART_OF]->(:Dataset)
+(:OsmRoad)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmRoad)-[:HAS_FOOTPRINT]->(:GeometryPolygon)
+(:OsmRoad)-[:HAS_LOD_SURFACE]->(:GeometryLineString)
+(:OsmPOI)-[:LOCATED_IN]->(:District)
+(:OsmPOI)-[:PART_OF]->(:Dataset)
+(:OsmPOI)-[:HAS_FOOTPRINT]->(:Entity)
+(:OsmPOI)-[:HAS_FOOTPRINT]->(:GeometryPolygon)

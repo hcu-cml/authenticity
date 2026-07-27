@@ -1,0 +1,44 @@
+# Neo4j service matching the released AuthentiCity dumps.
+#
+#   1. put the downloaded *.dump files in ./backups
+#   2. fetch the plugin JARs into ./plugins  (see plugins/README.md)
+#   3. size the memory settings in conf/neo4j.conf for your machine
+#   4. docker compose build neo4j
+#   5. docker compose run --rm --entrypoint "" neo4j \
+#        neo4j-admin database load neo4j --from-path=/backups --overwrite-destination
+#   6. docker compose up -d neo4j
+#   7. python ../tools/verify_restore.py --city <city>
+#
+# On Windows run steps 5 and 6 from PowerShell: a bash-style volume mount of a
+# Windows path can silently fail, after which the load exits with no data.
+
+services:
+  neo4j:
+    build:
+      context: .
+      dockerfile: Dockerfile.neo4j
+    image: authenticity/neo4j:2025.10.1
+    container_name: authenticity-neo4j
+    ports:
+      - "7474:7474"   # HTTP, Neo4j Browser
+      - "7687:7687"   # Bolt, driver connections
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - ./backups:/backups            # the downloaded dumps
+      - ./export:/export              # optional, for neo4j-admin output
+    environment:
+      # Change this before exposing the instance to anything but localhost.
+      # The shipped tools read NEO4J_USER / NEO4J_PASSWORD, so they follow.
+      - NEO4J_AUTH=neo4j/neo4jneo4j
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7474"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
