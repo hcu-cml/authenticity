@@ -130,7 +130,21 @@ Graphs are constructed by an open, standalone Python pipeline (CityGML → Neo4j
 
 ## Citation
 
-Knowledge graph mapper - pykci, Python Knowledge Graph for Cities:
+AuthentiCity paper:
+
+```bibtex
+@misc{nguyen_authenticity_2026,
+      title={{AuthentiCity: A Multi-Source Provenance-Aware Knowledge Graph and Benchmark for 3D City Models}}, 
+      author={Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
+      year={2026},
+      eprint={2607.25243},
+      archivePrefix={arXiv},
+      primaryClass={cs.DB},
+      url={https://arxiv.org/abs/2607.25243}, 
+}
+```
+
+AuthentiCity was built using our tool pykci - Python Knowledge Graph for Cities:
 
 ```bibtex
 @misc{nguyen_pykci_2026,
