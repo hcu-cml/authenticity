@@ -141,13 +141,16 @@ def crosscity_eval(graphs, methods=("gnn", "gnn_aware"), seeds=(0, 1, 2), epochs
 
 
 def crosscity_eval_regression(graphs, targets, methods=("probe", "gnn", "gnn_aware"),
-                              seeds=(0, 1, 2), epochs=150, device=None):
+                              seeds=(0, 1, 2), epochs=150, device=None, drop=("height",)):
     """Leave-one-city-out regression (height), agnostic vs aware -- same idea as `crosscity_eval`
     but for a continuous target, reusing t1_regression's training/metric code.
 
     `targets` are the raw per-Building target arrays from `t1_regression.load_target`, one per
     city, in the SAME order as `graphs` (combine_cities lays out each city's Buildings contiguously
-    in that order, so concatenating the targets the same way keeps everything aligned)."""
+    in that order, so concatenating the targets the same way keeps everything aligned).
+
+    `drop` removes the target's input column (default: height). The July version passed drop=[], which left
+    the per-city standardized target in the inputs; pass drop=() only to reproduce those numbers."""
     import t1_regression as T1
     device = device or S.pick_device()
     d = combine_cities(graphs)
@@ -164,7 +167,7 @@ def crosscity_eval_regression(graphs, targets, methods=("probe", "gnn", "gnn_awa
         out[held] = {}
         for m in methods:
             metrics = [T1.reg_metrics(target[test], T1._train_reg(
-                d, target, torch.tensor(train), s, m, drop=[], use_prov=(m == "gnn_aware"),
+                d, target, torch.tensor(train), s, m, drop=list(drop), use_prov=(m == "gnn_aware"),
                 device=device, c=c)[test]) for s in seeds]
             out[held][m] = {k: (float(np.mean([r[k] for r in metrics])),
                                 float(np.std([r[k] for r in metrics]))) for k in metrics[0]}

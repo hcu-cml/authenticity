@@ -1,0 +1,46 @@
+{
+  "table6_single_city": [
+    0,
+    1,
+    2
+  ],
+  "table6_spatial_folds_k": 5,
+  "table7_crosscity_and_B1": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "table17_original": [
+    0,
+    1,
+    2
+  ],
+  "B2": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "B4": [
+    0,
+    1,
+    2
+  ],
+  "B3_export": [
+    0
+  ],
+  "note": "S.set_seed(seed) before every model fit; spatial folds = KMeans(n_clusters=5, n_init=10, random_state=seed) on labelled Buildings' (center_x, center_y)."
+}

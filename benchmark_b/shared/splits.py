@@ -185,8 +185,7 @@ def make_splits_function(data, seed=0, k=5, topk=8):
 
 
 def make_splits_roof_material(data, seed=0, k=5):
-    """Roof-material splits (Hamburg only, ML-predicted, ~50% coverage -- see PROGRESS.md S8-REAL /
-    BENCHMARK_B_HANDOFF.md). Only 5 classes and no long tail (majority 55.8%), unlike building
+    """Roof-material splits (Hamburg only, ML-predicted, ~50% coverage). Only 5 classes and no long tail (majority 55.8%), unlike building
     function, so the raw label space is used directly for both regimes -- no top-k grouping needed."""
     ym = data["Building"].y_roof_material.numpy()
     names_m = data["Building"].roof_material_names

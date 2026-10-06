@@ -16,9 +16,6 @@ RIGOUR:
 Note the reflexive subtlety: here the provenance layer *is* the matching target, so the aware arm's
 confidence weighting acts only on the TRAIN correspondence edges (test ones are held out) plus has_poi.
 """
-import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-import _setup_paths  # noqa: F401
-
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -86,11 +83,9 @@ def _shared_pos_norm(data):
     return {nt: (data[nt].pos - mu) / sd for nt in data.node_types if "pos" in data[nt]}
 
 
-def _embed_fn(kind, data_m, device, c, model=None):
+def _embed_fn(kind, data_m, device, c):
     """Return (model, embed()) where embed() -> {node_type: emb}. data_m is the masked graph.
-    Position (shared frame) is appended to features so the decoder can align locations across sources.
-    Pass `model` to reuse an already-trained encoder on a different message-passing graph (the
-    disjoint protocol trains on one graph and evaluates on another; same metadata, same weights)."""
+    Position (shared frame) is appended to features so the decoder can align locations across sources."""
     use_prov = (kind == "aware")
     posn = _shared_pos_norm(data_m)
     xd = {}
@@ -102,18 +97,15 @@ def _embed_fn(kind, data_m, device, c, model=None):
     ed = {et: data_m[et].edge_index.to(device) for et in data_m.edge_types}
     meta = data_m.metadata()
     if kind == "attr":
-        if model is None:
-            model = AttrEncoder(c["hidden"], meta[0]).to(device)
+        model = AttrEncoder(c["hidden"], meta[0]).to(device)
         return model, (lambda: model(xd, ed))
     if kind == "aware":
         ewd = S._norm_edge_weight_dict(data_m, device)
-        if model is None:
-            model = to_hetero(S.ProvGNN(c["hidden"], c["hidden"], c["dropout"]), meta, aggr="sum").to(device)
+        model = to_hetero(S.ProvGNN(c["hidden"], c["hidden"], c["dropout"]), meta, aggr="sum").to(device)
         return model, (lambda: model(xd, ed, ewd))
     conv = "gat" if kind == "gat" else "sage"
-    if model is None:
-        model = to_hetero(S.HeteroGNN(c["hidden"], c["hidden"], conv, c["heads"], c["dropout"]),
-                          meta, aggr="sum").to(device)
+    model = to_hetero(S.HeteroGNN(c["hidden"], c["hidden"], conv, c["heads"], c["dropout"]),
+                      meta, aggr="sum").to(device)
     return model, (lambda: model(xd, ed))
 
 
@@ -151,62 +143,8 @@ def _score_nonlearned(kind, data, pairs):
     raise ValueError(f"unknown non-learned kind {kind}")
 
 
-PROTOCOLS = ("disjoint", "legacy")
-
-
-def train_encoder(data, tr_cols, kind, seed, k_neg, true_of_b, device, c, protocol="disjoint",
-                  sup_frac=0.3):
-    """Train a learned encoder on the train correspondence edges `tr_cols`; return embed() evaluated
-    on the graph that holds ALL train edges (test edges removed -- the leakage guard).
-
-    protocol="legacy"   (the July/paper protocol): the supervised positive edges are themselves
-        present in the message-passing graph. The encoder can then learn "already linked => match",
-        a shortcut that INVERTS at test time, where the test positives are (correctly) absent from
-        the graph while their hard negatives keep their own links -- hence the below-chance ROC-AUC
-        of every graph encoder in tab:repL-match.
-    protocol="disjoint" (fixed; = PyG RandomLinkSplit(disjoint_train_ratio=sup_frac)): the train edges
-        are split once per seed into message edges (1-sup_frac, kept in the graph) and supervision
-        edges (sup_frac, removed from the graph and used as positives), so training positives look
-        exactly like test positives: unlinked in the graph the encoder sees. At evaluation the graph
-        holds all train edges, test edges removed, as before. No-graph `attr` is unaffected by the
-        graph; it is supervised on the same edges for comparability.
-    """
-    assert protocol in PROTOCOLS, protocol
-    pos = data[EDGE].edge_index.numpy()
-    bpos, opos = data["Building"].pos.numpy(), data["OsmBuilding"].pos.numpy()
-    S.set_seed(seed)
-    if protocol == "disjoint":
-        p = np.random.default_rng(seed + 1000).permutation(len(tr_cols))
-        n_sup = max(1, int(round(sup_frac * len(tr_cols))))
-        sup_cols, msg_cols = tr_cols[p[:n_sup]], tr_cols[p[n_sup:]]
-    else:
-        sup_cols, msg_cols = tr_cols, tr_cols
-    data_tr = _mask_test_edges(data, msg_cols)
-    sup_pos = pos[:, sup_cols]
-    sup_neg = _hard_negatives(bpos, opos, sup_pos, k_neg, seed, true_of_b)
-    model, embed = _embed_fn(kind, data_tr, device, c)
-    tp = torch.tensor(sup_pos, device=device); tn = torch.tensor(sup_neg, device=device)
-    with torch.no_grad():
-        embed()                                      # lazy init
-    opt = torch.optim.Adam(model.parameters(), lr=c["lr"], weight_decay=c["weight_decay"])
-    label = torch.cat([torch.ones(tp.size(1), device=device), torch.zeros(tn.size(1), device=device)])
-    for _ in range(c["epochs"]):
-        model.train(); opt.zero_grad()
-        z = embed()
-        logit = torch.cat([_score(z, tp), _score(z, tn)])
-        F.binary_cross_entropy_with_logits(logit, label).backward(); opt.step()
-    model.eval()
-    if protocol == "disjoint":
-        del data_tr
-        _, embed = _embed_fn(kind, _mask_test_edges(data, tr_cols), device, c, model=model)
-    return embed
-
-
 def run_matching(data, kind="sage", seeds=(0, 1, 2, 3, 4), test_frac=0.3, k_neg=5, device=None,
-                 return_scores=False, return_embeddings=False, protocol="disjoint", sup_frac=0.3,
-                 **cfg):
-    """`protocol`: "disjoint" (fixed, default) or "legacy" (reproduces tab:repL-match) -- see
-    train_encoder. Non-learned kinds are unaffected."""
+                 return_scores=False, return_embeddings=False, **cfg):
     c = {**S.CFG, **cfg}
     device = device or S.pick_device()
     pos = data[EDGE].edge_index.numpy()                       # [2, n_pos]  (building, osm)
@@ -231,8 +169,24 @@ def run_matching(data, kind="sage", seeds=(0, 1, 2, 3, 4), test_frac=0.3, k_neg=
             sp = _score_nonlearned(kind, data, te_pos)
             sn = _score_nonlearned(kind, data, te_neg)
         else:
-            embed = train_encoder(data, tr_cols, kind, seed, k_neg, true_of_b, device, c,
-                                  protocol=protocol, sup_frac=sup_frac)
+            data_m = _mask_test_edges(data, tr_cols)         # leakage guard
+            tr_pos = pos[:, tr_cols]
+            tr_neg = _hard_negatives(bpos, opos, tr_pos, k_neg, seed, true_of_b)
+
+            model, embed = _embed_fn(kind, data_m, device, c)
+            tp = torch.tensor(tr_pos, device=device); tn = torch.tensor(tr_neg, device=device)
+            with torch.no_grad():
+                embed()                                      # lazy init
+            opt = torch.optim.Adam(model.parameters(), lr=c["lr"], weight_decay=c["weight_decay"])
+            for _ in range(c["epochs"]):
+                model.train(); opt.zero_grad()
+                z = embed()
+                logit = torch.cat([_score(z, tp), _score(z, tn)])
+                label = torch.cat([torch.ones(tp.size(1), device=device),
+                                   torch.zeros(tn.size(1), device=device)])
+                F.binary_cross_entropy_with_logits(logit, label).backward(); opt.step()
+
+            model.eval()
             with torch.no_grad():
                 z = embed()
                 sp = _score(z, torch.tensor(te_pos, device=device)).cpu().numpy()
@@ -251,8 +205,7 @@ def run_matching(data, kind="sage", seeds=(0, 1, 2, 3, 4), test_frac=0.3, k_neg=
 
     def ms(a):
         return float(np.mean(a)), float(np.std(a))
-    out = {"AUC": ms(aucs), "AP": ms(aps), "Hits@1": ms(hits), "n_pos": n_pos, "n_test": n_te,
-           "per_seed": {"AUC": aucs, "AP": aps, "Hits@1": hits}, "protocol": protocol}
+    out = {"AUC": ms(aucs), "AP": ms(aps), "Hits@1": ms(hits), "n_pos": n_pos, "n_test": n_te}
     if return_scores:
         out["curves"] = curves      # [(y_true, score), ...] one pair per seed, for PR curves
     if return_embeddings:

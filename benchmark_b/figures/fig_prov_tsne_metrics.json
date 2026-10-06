@@ -1,0 +1,35 @@
+{
+ "protocol": "disjoint",
+ "seed": 0,
+ "k": 10,
+ "data_level": {
+  "P(ML covered)": 0.5017140266878205,
+  "P(ML covered | OSM match)": 0.5635089912287355,
+  "P(ML covered | no OSM match)": 0.15454762391763824,
+  "phi(OSM match, ML covered)": 0.29293949996227625
+ },
+ "sage": {
+  "osm_coverage": {
+   "purity": 0.896588,
+   "chance": 0.7474983367999999,
+   "share_true": 0.85178
+  },
+  "ml_coverage": {
+   "purity": 0.862338,
+   "chance": 0.5000256328,
+   "share_true": 0.50358
+  }
+ },
+ "aware": {
+  "osm_coverage": {
+   "purity": 0.996544,
+   "chance": 0.7474983367999999,
+   "share_true": 0.85178
+  },
+  "ml_coverage": {
+   "purity": 0.789518,
+   "chance": 0.5000256328,
+   "share_true": 0.50358
+  }
+ }
+}

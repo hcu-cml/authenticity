@@ -12,14 +12,19 @@ Metric: per building, is the primary ranked above its distractors (Hits@1) / mea
 SAME metric as the CPU distance check, so numbers are directly comparable to the 0.74 baseline.
 Runs distance + attrsim (non-learned) and sage/aware encoders, each WITH and WITHOUT appended
 position (the without-position arm probes non-geometric signal; note OSM still carries cx,cy).
+
+October 2026: training now goes through t3_matching.train_encoder, so --protocol disjoint (default)
+keeps the supervision edges out of the message-passing graph. The July version trained on edges that
+were also in the graph (= --protocol legacy, kept only to reproduce the withdrawn numbers).
+Usage: python t3_nm_matching.py [--protocol disjoint|legacy]   (run from the folder holding graph_hamburg.pt)
 """
+import argparse
 import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import _setup_paths  # noqa: F401
 
 import json
 import numpy as np
 import torch
-import torch.nn.functional as F
 from collections import defaultdict
 
 from neo4j_loader import load_or_cache
@@ -28,7 +33,10 @@ import t3_matching as T3
 
 EDGE = T3.EDGE
 SEEDS = (0, 1, 2)
-OUT = "t3_nm_matching.json"
+_ap = argparse.ArgumentParser()
+_ap.add_argument("--protocol", default="disjoint", choices=("disjoint", "legacy"))
+PROTOCOL = _ap.parse_args().protocol
+OUT = f"t3_nm_matching_{PROTOCOL}.json"
 
 data = load_or_cache("graph_hamburg.pt", verbose=False)
 dev = S.pick_device()
@@ -68,7 +76,7 @@ def metrics(score_of):
     return {"Hits@1": float(np.mean(hits)), "meanAUC": float(np.mean(aucs))}
 
 
-res = {"_meta": {"n_test": len(test_bs), "chance_Hits@1":
+res = {"_meta": {"protocol": PROTOCOL, "n_test": len(test_bs), "chance_Hits@1":
                  float(np.mean([1 / len(cand_of[b]) for b in test_bs]))}}
 
 # ---- non-learned baselines ----
@@ -84,24 +92,13 @@ def run_learned(kind, use_pos):
     hh, aa = [], []
     for seed in SEEDS:
         S.set_seed(seed)
-        data_m = T3._mask_test_edges(data, keep_cols)
-        tr_pos = pos[:, keep_cols]
-        tr_neg = T3._hard_negatives(bpos, opos, tr_pos, 5, seed, true_of_b)
         saved = T3._shared_pos_norm
         if not use_pos:
             T3._shared_pos_norm = lambda d: {}                # drop appended shared-frame position
         try:
-            model, embed = T3._embed_fn(kind, data_m, dev, cfg)
-            tp = torch.tensor(tr_pos, device=dev); tn = torch.tensor(tr_neg, device=dev)
-            with torch.no_grad():
-                embed()
-            opt = torch.optim.Adam(model.parameters(), lr=cfg["lr"], weight_decay=cfg["weight_decay"])
-            for _ in range(cfg["epochs"]):
-                model.train(); opt.zero_grad(); z = embed()
-                logit = torch.cat([T3._score(z, tp), T3._score(z, tn)])
-                label = torch.cat([torch.ones(tp.size(1), device=dev), torch.zeros(tn.size(1), device=dev)])
-                F.binary_cross_entropy_with_logits(logit, label).backward(); opt.step()
-            model.eval()
+            # test buildings' edges are masked; training edges = keep_cols (split into message and
+            # supervision edges under the disjoint protocol)
+            embed = T3.train_encoder(data, keep_cols, kind, seed, 5, true_of_b, dev, cfg, protocol=PROTOCOL)
             with torch.no_grad():
                 z = embed()
                 sc = T3._score(z, torch.tensor(np.array(allpairs).T, device=dev)).cpu().numpy()
