@@ -147,14 +147,19 @@ AuthentiCity paper:
 AuthentiCity was built using our tool pykci - Python Knowledge Graph for Cities:
 
 ```bibtex
-@misc{nguyen_pykci_2026,
-      title={pykci: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using LLMs},
+@inproceedings{nguyen_pykci_2026,
+      title={{pykci}: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using {LLMs}},
       author={Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
+      booktitle={Proceedings of the 34th ACM International Conference on Advances in Geographic Information Systems},
+      series={SIGSPATIAL '26},
       year={2026},
-      eprint={2607.01605},
-      archivePrefix={arXiv},
-      primaryClass={cs.DB},
-      url={https://arxiv.org/abs/2607.01605},
+      month={nov},
+      location={Riverside, CA, USA},
+      publisher={Association for Computing Machinery},
+      address={New York, NY, USA},
+      isbn={979-8-4007-2950-8},
+      doi={10.1145/3841645.3843314},
+      url={https://doi.org/10.1145/3841645.3843314},
 }
 ```
 
