@@ -128,7 +128,8 @@
       "name": "github-repository",
       "description": "Code and benchmark repository: loaders, verification tools, the question suite, the evaluation harness, cached baseline outputs and the documentation.",
       "contentUrl": "https://github.com/hcu-cml/authenticity",
-      "encodingFormat": "git+https"
+      "encodingFormat": "git+https",
+      "sha256": "main"
     },
     {
       "@type": "cr:FileObject",
