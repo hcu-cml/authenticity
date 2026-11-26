@@ -1,6 +1,6 @@
 # Datasheet for AuthentiCity
 
-Following *Datasheets for Datasets* (Gebru et al., 2021). This is the complete version; the paper's appendix carries a condensed form. Version 1.0.0, 2026-07-27.
+Following *Datasheets for Datasets* (Gebru et al., 2021). This is the datasheet the paper refers to. Version 1.0.0, 2026-07-27.
 
 Numbers in this document come from the released artifacts, not from re-derivation: per-city counts from [dumps/counts/](dumps/counts/) (written at dump time), storage from [quality/disk_footprint.md](quality/disk_footprint.md), verification outcomes from [quality/](quality/), and question-suite statistics from [benchmark_a/](benchmark_a/).
 
@@ -153,7 +153,7 @@ The dataset describes the built environment, not individuals, and should not be 
 The five graphs are distributed as offline `neo4j-admin database dump` archives (26.9 GiB total, written by Neo4j 2025.10.1) from the Zenodo record, openly downloadable without a personal request. This repository distributes the loaders and verification tools, the complete question suite with gold queries and materialized answers for the development split, the held-out test questions, the evaluation harness, cached baseline outputs, the per-city verification reports, and this documentation. A backend-neutral node and edge table export is produced by [tools/export_tables.py](tools/export_tables.py) for consumers who do not want a Neo4j dependency.
 
 **When will it be distributed and under what license?**
-Version 1.0.0, 2026-07-27. The graph dumps are released under ODbL 1.0 because each embeds substantial OpenStreetMap content and ODbL's share-alike applies to a derived database; each source layer additionally retains its own license (Hamburg dl-de/by-2-0, Helsinki CC BY 4.0, Zurich swisstopo open government data terms, New York NYC OpenData terms, Tokyo PLATEAU Public Data License 1.0). Our annotations, question suite, and documentation are CC BY 4.0; the code is MIT. Attribution to OpenStreetMap and to the respective authoritative provider is required. Full terms and attribution strings: [DATA_LICENSES.md](DATA_LICENSES.md).
+Version 1.0.0, 2026-07-27. The graph dumps are released under CC BY 4.0. The OpenStreetMap-derived content in them (the OSM feature nodes, the `osm_*` properties, and the correspondence edges) is not relicensed and remains under ODbL 1.0; each source layer additionally retains its own license (Hamburg dl-de/by-2-0, Helsinki CC BY 4.0, Zurich swisstopo open government data terms, New York NYC OpenData terms, Tokyo PLATEAU Public Data License 1.0). Our annotations, question suite, and documentation are CC BY 4.0; the code is MIT. Attribution to OpenStreetMap and to the respective authoritative provider is required. Full terms and attribution strings: [DATA_LICENSES.md](DATA_LICENSES.md).
 
 **Have any third parties imposed IP-based or other restrictions?**
 No restrictions beyond the source licenses above. All five authoritative sources permit redistribution with attribution. No export controls or regulatory restrictions apply.

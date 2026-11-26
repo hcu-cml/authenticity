@@ -18,8 +18,12 @@ type: dataset
 version: 1.0.0
 date-released: "2026-07-27"
 doi: 10.5281/zenodo.21547211
-license: ODbL-1.0
-license-url: "https://opendatacommons.org/licenses/odbl/1-0/"
+# The dumps are CC BY 4.0 with the OpenStreetMap-derived content under ODbL 1.0
+# (DATA_LICENSES.md). A list of two identifiers would be read as a choice
+# between them, so this field names the license of the Zenodo record and the
+# URL leads to the full terms.
+license: CC-BY-4.0
+license-url: "https://github.com/hcu-cml/authenticity/blob/main/DATA_LICENSES.md"
 url: "https://github.com/hcu-cml/authenticity"
 repository-code: "https://github.com/hcu-cml/authenticity"
 authors:

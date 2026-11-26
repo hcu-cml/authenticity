@@ -31,13 +31,13 @@ The five graphs are on Zenodo: **<https://doi.org/10.5281/zenodo.21547211>**
 
 | City | File | Size |
 | --- | --- | --- |
-| Hamburg | `neo4j_hamburg_lod2_roofmats_lod3_osm_20260717.dump` | 3.07 GiB |
-| Helsinki | `neo4j_helsinki_lod2_osm_20260716.dump` | 0.15 GiB |
-| Zurich | `neo4j_zurich_lod2_osm_20260716.dump` | 5.57 GiB |
-| New York | `neo4j_nyc_lod2_osm_20260716.dump` | 6.81 GiB |
-| Tokyo | `neo4j_tokyo_bcore_osm_20260717.dump` | 11.32 GiB |
+| Hamburg | `authenticity_hamburg_v1_0.dump` | 3.07 GiB |
+| Helsinki | `authenticity_helsinki_v1_0.dump` | 0.15 GiB |
+| Zurich | `authenticity_zurich_v1_0.dump` | 5.57 GiB |
+| New York | `authenticity_nyc_v1_0.dump` | 6.81 GiB |
+| Tokyo | `authenticity_tokyo_v1_0.dump` | 11.32 GiB |
 
-Each dump has a companion `*_counts.txt` recording its exact provenance and the counts to verify after a restore. Copies of those manifests are in [../dumps/counts/](../dumps/counts/) so you can check them before downloading anything. Zenodo publishes an MD5 per file; verify it, especially for the multi-gigabyte files. For the largest files prefer the Zenodo REST API or a command-line downloader over the browser uploader path.
+Each dump has a counts manifest in [../dumps/counts/](../dumps/counts/), recording its exact provenance and the counts to verify after a restore, so you can check them before downloading anything. Zenodo publishes an MD5 per file; verify it, especially for the multi-gigabyte files. For the largest files prefer the Zenodo REST API or a command-line downloader over the browser uploader path.
 
 ---
 

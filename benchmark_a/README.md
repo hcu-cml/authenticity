@@ -162,4 +162,4 @@ Reproduce any of this: [../docs/REPRODUCE.md](../docs/REPRODUCE.md).
 
 ## License and citation
 
-Questions, gold queries, gold answers, and reports are CC BY 4.0; the harness is MIT; question content quotes values from the released graphs, which are ODbL 1.0. See [../DATA_LICENSES.md](../DATA_LICENSES.md). Cite as in [../CITATION.cff](../CITATION.cff).
+Questions, gold queries, gold answers, and reports are CC BY 4.0; the harness is MIT; question content quotes values from the released graphs, which are CC BY 4.0 with their OpenStreetMap-derived content under ODbL 1.0. See [../DATA_LICENSES.md](../DATA_LICENSES.md). Cite as in [../CITATION.cff](../CITATION.cff).

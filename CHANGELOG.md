@@ -42,6 +42,12 @@ Recorded because it affects how the numbers should be read.
 
 ---
 
+## License statement of the dumps (November 2026)
+
+No data changed. This repository now states the license of the dumps the way the Zenodo record does: CC BY 4.0, with the OpenStreetMap-derived content under ODbL 1.0 and each source layer under its provider's license. Before, it described the dumps as ODbL 1.0 as a whole. Full terms: [DATA_LICENSES.md](DATA_LICENSES.md).
+
+---
+
 ## Planned
 
 Not commitments with dates, but the direction, so that consumers can judge stability:

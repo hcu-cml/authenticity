@@ -1,100 +1,99 @@
 # AuthentiCity
 
-**A multi-source, provenance-aware 3D city knowledge graph spanning five cities across three continents.**
+**A multi-source, provenance-aware 3D city knowledge graph spanning five cities across three continents, with two benchmark families built on it.**
 
-AuthentiCity is **primarily a data contribution**: a unified, provenance-aware representation of heterogeneous urban data whose facts differ in reliability, coverage, and semantics. It fuses **authoritative** 3D city models (CityGML/ALKIS), **crowd-sourced** data (OpenStreetMap), **ML-predicted** attributes (roof materials), and **reconstructed** geometry (LoD3) into labeled property graphs that keep every fact traceable to its origin; derived information never replaces authoritative values. Confidence-weighted edges resolve many-to-many cross-source correspondences, constructing canonical urban entities while preserving traceable links to all contributing evidence.
+[![Data DOI](https://img.shields.io/badge/data-10.5281%2Fzenodo.21547211-blue)](https://doi.org/10.5281/zenodo.21547211)
+[![Docs license: CC BY 4.0](https://img.shields.io/badge/docs%20%26%20benchmark-CC%20BY%204.0-lightgrey)](LICENSE)
+[![Code license: MIT](https://img.shields.io/badge/code-MIT-lightgrey)](LICENSE-CODE)
+[![Graphs: CC BY 4.0, OSM content ODbL 1.0](https://img.shields.io/badge/graph%20dumps-CC%20BY%204.0%2C%20OSM%20content%20ODbL%201.0-lightgrey)](DATA_LICENSES.md)
 
-To demonstrate the tasks the representation enables, we release two benchmark families, natural-language-to-query translation and graph representation learning, targeting capabilities that existing text-to-query and urban-reasoning benchmarks do not measure: provenance-aware filtering, cross-source (dis)agreement, coverage-aware aggregation, infeasible-query detection, 3D spatial reasoning, and provenance-aware embeddings.
+This repository is the code-and-benchmark half of the AuthentiCity artifact. The five city graphs themselves are large binary databases and live in the Zenodo archive; everything needed to load them, verify them, query them, and reproduce both benchmarks is here.
 
-The graph spans **five cities across three continents** (Hamburg, Helsinki, Zurich, New York, and Tokyo) and comprises roughly **180 GiB, 180 M nodes, 220 M edges, 1.2 B properties, and 3.6 M buildings**.
+AuthentiCity is **primarily a data contribution**: a unified representation of heterogeneous urban data whose facts differ in reliability, coverage, and semantics. It fuses **authoritative** 3D city models (CityGML, cadastral), **crowd-sourced** data (OpenStreetMap), **ML-predicted** attributes (roof materials), and **reconstructed** geometry (LoD3) into labeled property graphs in which every fact stays traceable to its origin and derived information never replaces authoritative values. Confidence-weighted edges retain many-to-many cross-source correspondences instead of collapsing them, so canonical urban entities can be constructed without discarding the contributing evidence.
+
+Two benchmark families demonstrate what the representation enables: **natural-language-to-Cypher translation** and **graph representation learning**. Both target capabilities that existing text-to-query and urban-reasoning benchmarks do not measure: provenance-aware filtering, cross-source (dis)agreement, coverage-aware aggregation, infeasible-query detection, 3D spatial reasoning, and provenance-aware embeddings.
+
+---
+
+## Start here
+
+| If you want to | Read |
+| --- | --- |
+| Download and restore a city graph, then run your first queries | [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) |
+| Understand the graph model before writing Cypher | [docs/GRAPH_SCHEMA.md](docs/GRAPH_SCHEMA.md) |
+| Understand how provenance is represented and what the trust layers mean | [docs/PROVENANCE.md](docs/PROVENANCE.md) |
+| Know exactly where every city's data came from and under which license | [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md), [DATA_LICENSES.md](DATA_LICENSES.md) |
+| Evaluate a model on the NL-to-Cypher benchmark | [benchmark_a/README.md](benchmark_a/README.md) |
+| Work on the representation-learning benchmark | [benchmark_b/README.md](benchmark_b/README.md) |
+| Check how the released graphs were validated | [docs/QUALITY_GATES.md](docs/QUALITY_GATES.md), [quality/](quality/) |
+| Reproduce a number from the paper | [docs/REPRODUCE.md](docs/REPRODUCE.md) |
+| Read the dataset documentation in full (composition, collection, uses, distribution, maintenance) | [datasheet.md](datasheet.md) |
+| Know what the dataset cannot do | [LIMITATIONS.md](LIMITATIONS.md), [ETHICS.md](ETHICS.md) |
 
 ---
 
 ## The five city graphs
 
-| City | Buildings | Nodes | Edges | Store (GiB) | Dump (GiB) | Extra layers |
-|------|----------:|------:|------:|------------:|-----------:|--------------|
-| Hamburg (flagship) | 388,267 | 17.44 M | 26.30 M | 14.8 | 3.1 | OSM · ML roof materials · LoD3 facades |
-| Helsinki | 2,980 | 0.41 M | 0.62 M | 0.3 | 0.2 | OSM |
-| Zurich | 102,668 | 41.51 M | 45.55 M | 30.2 | 5.6 | OSM |
-| New York | 1,083,437 | 45.80 M | 54.21 M | 32.4 | 7.0 | OSM (97.5 % of heights are OSM-only; **0 % authoritative height**) |
-| Tokyo | 2,005,762 | 74.41 M | 91.95 M | 99.2 | 11.3 | OSM (Japanese-keyed PLATEAU schema, mostly LoD1) |
-| **Total** | **3,583,114** | **179.57 M** | **218.62 M** | **176.9** | **27.2** | |
+| City | Buildings | Nodes | Edges | Store (GiB) | Dump (GiB) | Derived layers beyond CityGML + OSM |
+| --- | --: | --: | --: | --: | --: | --- |
+| Hamburg, DE (flagship) | 388,267 | 17.44 M | 26.30 M | 14.77 | 3.07 | ML roof materials, reconstructed LoD3 facades |
+| Helsinki, FI | 2,980 | 0.41 M | 0.62 M | 0.28 | 0.15 | none |
+| Zurich, CH | 102,668 | 41.51 M | 45.55 M | 30.21 | 5.57 | none |
+| New York, US | 1,083,437 | 45.80 M | 54.21 M | 31.90 | 6.81 | none (97.5 % of heights are OSM-only; **no authoritative height at all**) |
+| Tokyo, JP | 2,005,762 | 74.41 M | 91.95 M | 99.18 | 11.32 | none (Japanese-keyed PLATEAU schema, predominantly LoD1) |
+| **Total** | **3,583,114** | **179.57 M** | **218.62 M** | **176.3** | **26.9** | |
 
-Every city carries the authoritative CityGML layer plus OSM fusion; only Hamburg additionally carries the ML roof-material and reconstructed LoD3 layers.
+Store sizes are the Neo4j data store with write-ahead logs excluded, as measured additively after each ingestion stage ([quality/disk_footprint.md](quality/disk_footprint.md)); dumps are the compressed archives actually released.
+
+Every city carries the authoritative CityGML layer plus whole-city OpenStreetMap fusion (9,490,346 OSM features in total, 2.95 M confidence-weighted `ENRICHED_BY` correspondence edges, 181,539 `HAS_POI` attachments). Node and relationship property records total 1.18 B. Exact per-city counts, as written at dump time, are in [dumps/counts/](dumps/counts/); they are also what [tools/verify_restore.py](tools/verify_restore.py) checks a restore against.
+
+The graphs are released as offline **Neo4j 2025.10.1** database dumps, one per city, on Zenodo: **[10.5281/zenodo.21547211](https://doi.org/10.5281/zenodo.21547211)**. A dump loads only into the same or a newer Neo4j version.
 
 ---
 
 ## Provenance model
 
-AuthentiCity is built on one binding principle: **every fact stays traceable to its source, and derived information never replaces authoritative data.** Four trust layers span the spectrum from surveyed to predicted:
+One binding principle: **every fact stays traceable to its source, and derived information never replaces authoritative data.** Four layers span the spectrum from surveyed to predicted.
 
 | Layer | Source | Trust | Attached as |
-|-------|--------|-------|-------------|
-| Authoritative | CityGML / ALKIS (official 3D city models) | highest | native node properties |
-| Crowd-sourced | OpenStreetMap | medium | `OsmFeature` nodes + `ENRICHED_BY` edges, `osm_*` scalars |
-| ML-predicted | roof-material classifier (aerial orthophotos) | confidence-carrying | `predicted_roof_material_*` scalars (Hamburg) |
-| Reconstructed | LoD3 facade reconstruction | derived | LoD3 geometry nodes (Hamburg) |
+| --- | --- | --- | --- |
+| Authoritative | CityGML / cadastral city models | highest | native node properties |
+| Crowd-sourced | OpenStreetMap | medium | `OsmFeature` nodes, `ENRICHED_BY` / `HAS_POI` edges, `osm_*` scalars |
+| ML-predicted | roof-material classifier over aerial imagery | confidence-carrying | `predicted_roof_material_*` scalars (Hamburg) |
+| Reconstructed | LoD3 facade reconstruction | derived | LoD3 geometry nodes behind `HAS_LOD3_FACADE` (Hamburg) |
 
-Cross-source correspondences are **not collapsed into hard matches.** OSM↔CityGML footprints are matched across the 1:1 / 1:n / n:1 / n:m cases and retained as confidence-weighted `ENRICHED_BY` edges (each edge carries its overlap coefficient, Jaccard index, intersection area, correspondence case, and a primary-match flag), so queries and learning methods can resolve correspondences as needed. Authoritative and derived values (e.g., `measured_height` vs. `osm_height`) sit side by side under distinct namespaces and can be compared directly.
+Cross-source correspondences are **not collapsed into hard matches**. OSM and CityGML footprints are matched across the 1:1, 1:n, n:1, and n:m cases and retained as confidence-weighted `ENRICHED_BY` edges, each carrying its overlap ratio, Jaccard index, intersection area, correspondence case, and a primary-match flag, so a consumer can rethreshold or reweight matches without redoing the alignment. Authoritative and derived values (for example `measured_height` against `osm_height`) sit side by side under distinct namespaces and can be compared directly. Full rules: [docs/PROVENANCE.md](docs/PROVENANCE.md).
 
 ---
 
-## Graph schema (brief)
+## Graph schema in one paragraph
 
-Labeled property graph in **Neo4j**. Core node labels: `Dataset`, `City`, `District`, `Building`, `BuildingPart`, `BoundarySurface`, `Geometry*` (polygon/ring/solid/multi-surface/…), `BuildingFunction`, `RoofType`, and the shared `CityObject` label for non-building modules (Bridge, Tunnel, Road, WaterBody, Vegetation, …). OSM adds `OsmFeature` (with a dynamic `Osm*` sub-label and `osm_kind`). Fusion edges: `ENRICHED_BY` (footprint correspondence) and `HAS_POI` (points of interest). Geometry coordinates are stored **verbatim**: the authoritative layer round-trips CityGML 2.0 losslessly (all LoD 0–4, all thematic modules). Spatial queries use per-layer R-tree indexes (`features` for CityGML, `osm_features` for OSM).
+A labeled property graph in Neo4j. Core node labels: `Dataset`, `City`, `District`, `Building`, `BuildingPart`, `BoundarySurface`, the `Geometry*` family (polygon, ring, solid, multi-surface, composite surface, line string), `BuildingFunction`, `RoofType`, and the shared `CityObject` label for non-building modules (bridge, tunnel, road, water body, vegetation, city furniture, land use). OSM adds `OsmFeature` with a dynamic `Osm*` sub-label and a canonical `osm_kind`. Geometry coordinates are stored **verbatim**, never rounded, which is what makes the authoritative layer round-trip CityGML 2.0 losslessly across all LoD 0 to 4 and all thematic modules. Spatial queries use per-layer Neo4j Spatial R-tree indexes (`features` for CityGML, `osm_features` for OSM, `lod3_features` for the Hamburg LoD3 layer), which are contained in the dumps and need no rebuild after a restore. The exact schema text that models were given, per city, is in [schema/](schema/); the annotated reference is [docs/GRAPH_SCHEMA.md](docs/GRAPH_SCHEMA.md).
 
 ---
 
 ## Benchmarks
 
-### Task Family A: Natural-language to Cypher
+### Task Family A: natural-language to Cypher
 
-1,394 questions across 84 schema-grounded templates and nine categories, split by template into a public **development set** and a **held-out test set** (gold queries unpublished). Five categories are distinctive contributions: **spatial** (window / proximity / nearest-neighbor / 3D-structure / density), **cross-source** (authoritative vs. crowd-sourced agreement and OSM-only coverage), **provenance-filtered** (source/confidence constraints, including traps), **coverage-aware** (aggregates meaningful only over the covered subset), and **infeasible** (guard-verified questions with no valid answer). Feasibility is data-dependent, so the same template can flip category across cities.
+**1,394 questions, 84 schema-grounded templates, nine categories, five cities, three languages.** Split by template into a public **development set** (1,024 questions, gold Cypher and materialized gold answers included) and a **held-out test set** (370 questions, 25 unseen templates, gold withheld). Five categories are distinctive contributions: **spatial** (window, proximity, nearest neighbor, 3D structure, density), **cross-source** (authoritative against crowd-sourced agreement, and what the crowd layer reports where the authoritative source is silent), **provenance-filtered** (source and confidence constraints, including traps), **coverage-aware** (aggregates meaningful only over the covered subset), and **infeasible** (guard-verified questions with no valid answer). Feasibility is a property of the data, so the same template can flip category across cities.
 
-We report **execution accuracy (EX)** decomposed into executed-and-correct, executed-but-wrong, errored, and over-refusal, plus infeasibility precision/recall/F1. Reference results:
+Every question passed a five-stage machine gate (executes, deterministic across three runs, non-empty unless permitted, guard-verified for infeasible, re-materialized on every rebuild), and 282 questions (20.2 %) were additionally reviewed by the authors. Reference results are cached in full: generated Cypher, per-question outcomes, exact prompts, and raw model responses.
 
-- **Claude (commercial frontier model, closed-book):** 54–69 % EX across the five cities; the remaining mass is mostly *executed-but-wrong* (semantic, not syntax, failures).
-- **qwen2.5-coder:7b (local open-weight):** 6–19 % EX, dominated by *errored* queries, largely hallucinated PostGIS `ST_*` functions in spatial tasks; it **never abstains** on an unanswerable question, generating a query for every infeasible case (infeasibility recall 0).
+- **Claude Sonnet 5** (commercial frontier model, closed-book, schema only): 54 to 69 % execution accuracy across the five cities. Nearly all remaining mass is *executed-but-wrong*, that is semantic rather than syntax failure.
+- **qwen2.5-coder:7b** (local open-weight, Ollama Q4_K_M): 6 to 19 % execution accuracy, dominated by *errored* queries, largely hallucinated PostGIS `ST_*` functions in spatial tasks. It never abstains on an unanswerable question, so its infeasibility recall is 0 and its F1 undefined.
 
-Even a strong commercial model leaves substantial headroom, concentrated in the novel provenance-, coverage-, and infeasibility categories.
+Even a strong commercial model leaves substantial headroom, concentrated in the provenance, coverage, and infeasibility categories. Details, file layout, scoring rules, and how to submit a run: [benchmark_a/README.md](benchmark_a/README.md).
 
-### Task Family B: Graph representation learning
+### Task Family B: graph representation learning
 
-Three tasks under fixed random / spatial-block / cross-city splits, each run in two protocols:
+Three tasks under fixed spatial-block (5-fold) and cross-city (leave-one-city-out) splits, each run in a **provenance-agnostic** protocol (source distinctions hidden, as existing urban graphs are consumed) and a **provenance-aware** protocol (source-typed relations, fusion-edge confidences as message-passing weights, coverage features):
 
-- **Attribute imputation:** predict roof-material class (labels cover ~50 % of buildings).
-- **Node classification:** predict ALKIS building-function and roof-type classes.
-- **Link prediction:** predict held-out `ENRICHED_BY` correspondence edges (casts OSM↔CityGML footprint matching as a learning task).
+- **Attribute imputation**: building height, and the ML roof-material class where the external model produced no label.
+- **Node classification**: cadastral building-function and roof-type classes.
+- **Link prediction**: held-out `ENRICHED_BY` correspondence edges, which casts OSM-to-CityGML footprint matching as a learning task.
 
-Each task is evaluated under a **provenance-agnostic** protocol (source distinctions hidden, as in existing urban graphs) and a **provenance-weighted** protocol (trust classes and fusion-edge confidences exposed, e.g. Jaccard-weighted message passing). The Δ between them is the headline measurement: the first such comparison on a real city-scale multi-source graph.
-
----
-
-## Getting started
-
-The graphs are released as offline **Neo4j 2025.10.1** database dumps (one per city). A version mismatch will fail to load.
-
-```bash
-# Restore one city into a fresh/empty Neo4j 2025.10.1 instance
-neo4j-admin database load neo4j --from-path=/path/to/dumps --overwrite-destination
-neo4j start
-```
-
-```cypher
-// Sanity-check the restore
-MATCH (n)                        RETURN count(n);   // total nodes
-MATCH (b:Building)               RETURN count(b);   // buildings
-MATCH ()-[r:ENRICHED_BY]->()     RETURN count(r);   // OSM correspondences
-
-// Example: buildings where OSM and authoritative height disagree by > 3 m
-MATCH (b:Building)-[:ENRICHED_BY {is_primary:true}]->(o:OsmFeature)
-WHERE o.osm_height IS NOT NULL AND b.measured_height IS NOT NULL
-  AND abs(toFloat(o.osm_height) - b.measured_height) > 3.0
-RETURN b.id, b.measured_height, o.osm_height;
-```
-
-**Memory sizing:** the reference configuration (`heap=16g`, `pagecache=32g`) targets a ~62 GiB machine. Keep `heap + pagecache` under ~80 % of available RAM. Plan around store sizes above: Tokyo (~99 GiB) is the largest; start with Hamburg (smallest full-stack city) if resources are tight.
+The headline measurement is the difference between the two protocols. In distribution the aware encoder's advantage is statistically consistent but negligible (at most 0.010 absolute); under leave-one-city-out it becomes substantial (Hamburg height transfer R² 0.270 to 0.548). Learned encoders lose to non-learned baselines on matching, and collapse to chance on the ambiguous n:m subset where a trivial attribute rule still reaches 0.94 AUC. See [benchmark_b/README.md](benchmark_b/README.md) for the task definitions, protocols, reported numbers, and the code status.
 
 ---
 
@@ -102,72 +101,110 @@ RETURN b.id, b.measured_height, o.osm_height;
 
 ```text
 authenticity/
-├── README.md                ← this file
-├── dumps/                    ← the five enriched property graphs (Neo4j 2025.10.1 dumps)
-├── loaders/                  ← graph loaders / export utilities
-├── benchmark_a/              ← question suite with gold Cypher + materialized gold answers, task splits, evaluation harness, cached model outputs
-├── benchmark_b/              ← representation-learning task splits, loaders, baseline configs
-├── schema/                   ← graph schema reference, ALKIS code lists, Cypher cheat-sheet
-└── datasheet.md              ← dataset datasheet (motivation, composition, collection, uses, distribution)
+├── README.md                  this file
+├── datasheet.md               dataset documentation (Gebru et al. framework)
+├── LIMITATIONS.md             what the dataset does not support
+├── ETHICS.md                  privacy, bias, misuse, licensing ethics
+├── DATA_LICENSES.md           per-source terms, attribution, redistribution
+├── LICENSE / LICENSE-CODE     CC BY 4.0 (docs, annotations, benchmark) / MIT (code)
+├── CITATION.cff               how to cite the dataset and the paper
+├── CHANGELOG.md               dataset and question-suite versioning (gate G5)
+├── croissant.json             machine-readable dataset metadata
+├── requirements.txt           Python dependencies for the tools and harness
+├── docs/                      getting started, schema, provenance, sources,
+│                              quality gates, reproduction, environment
+├── docker/                    Neo4j 2025.10.1 service matching the dumps
+├── dumps/                     how to fetch the graphs + per-city count manifests
+├── schema/                    per-city schema text given to the models
+├── benchmark_a/               NL-to-Cypher: questions, splits, harness,
+│                              verification reports, cached baselines
+├── benchmark_b/               representation learning: tasks, protocols, splits
+├── quality/                   per-city verification and anomaly reports
+├── stats/                     per-city content metrics (machine-readable)
+└── tools/                     restore verification, backend-neutral export,
+                               cross-source conflict analysis
 ```
 
-> The public **development split** ships complete: questions, **gold Cypher queries, and materialized gold answers**, for offline scoring against the released graphs. The **test split** is released as a genuine held-out benchmark (see the datasheet for its gold-answer policy).
+Files under `benchmark_a/`, `quality/`, `stats/`, `schema/`, and `dumps/counts/` are staged from the construction repository by a script, so the release can be rebuilt after any pipeline re-run rather than hand-curated. That script also enforces the two release invariants: no held-out gold and no credentials or local paths leave the source repo.
 
 ---
 
-## Reproducibility
+## Construction pipeline
 
-Graphs are constructed by an open, standalone Python pipeline (CityGML → Neo4j ingest, OSM fusion, ML/LoD3 enrichment, export) with per-city before/after statistical gates and lossless round-trip census checks. The benchmark question suite is machine-generated from schema-grounded templates and re-materialized against the released graphs, so it cannot drift from the data. See the datasheet and the accompanying paper for the full protocol.
+The graphs are built by **pykci**, an open standalone Python pipeline (CityGML to Neo4j ingest, OSM fusion, ML and LoD3 enrichment, CityGML and 3D Tiles export, per-city statistical gates, lossless round-trip census): <https://github.com/hcu-cml/pykci>, MIT licensed. This repository does not duplicate it; [docs/REPRODUCE.md](docs/REPRODUCE.md) gives the exact commands, in order, that produced each released graph.
+
+The question suite is machine-generated from schema-grounded templates whose slot values are read from the released graph and whose gold answers are re-materialized against it, so it cannot drift from the data. The generator, verifier, splitter, and evaluation harness all ship here.
 
 ---
 
-## License
+## Licenses in short
 
-- **Data:** released under an open license compatible with its sources (CityGML/ALKIS per each provider's terms; OpenStreetMap under ODbL). See `LICENSE` and per-source attribution in the datasheet. *(Finalize before release.)*
-- **Code / benchmark harness:** open-source license. *(Finalize before release.)*
+- **Graph dumps (the data):** CC BY 4.0, the license of the Zenodo record. The OpenStreetMap-derived content in them (the OSM feature nodes, the `osm_*` properties, and the correspondence edges) is not relicensed and remains under ODbL 1.0. Attribution to OpenStreetMap **and** to the respective authoritative provider is required for any use or redistribution.
+- **Source layers:** each retains its own license: Hamburg dl-de/by-2-0, Helsinki CC BY 4.0, Zurich swisstopo open government data terms, New York NYC OpenData terms, Tokyo PLATEAU Public Data License 1.0.
+- **Our annotations, question suite, and documentation:** CC BY 4.0 ([LICENSE](LICENSE)).
+- **Code in this repository:** MIT ([LICENSE-CODE](LICENSE-CODE)).
+
+Full text, attribution strings, and per-source redistribution notes: [DATA_LICENSES.md](DATA_LICENSES.md).
 
 ---
 
 ## Citation
 
-AuthentiCity paper:
+Please cite both the dataset and the paper.
+
+```bibtex
+@dataset{nguyen_authenticity_data_2026,
+  author    = {Nguyen, Huynh Duc An Son and Arzoumanidis, Lukas and Dehbi, Youness},
+  title     = {{AuthentiCity}: Five Multi-Source, Provenance-Aware 3D City
+               Knowledge Graphs (Neo4j Database Dumps)},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {1.0.0},
+  doi       = {10.5281/zenodo.21547211},
+  url       = {https://doi.org/10.5281/zenodo.21547211}
+}
+```
 
 ```bibtex
 @misc{nguyen_authenticity_2026,
-      title={{AuthentiCity: A Multi-Source Provenance-Aware Knowledge Graph and Benchmark for 3D City Models}}, 
-      author={Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
-      year={2026},
-      eprint={2607.25243},
-      archivePrefix={arXiv},
-      primaryClass={cs.DB},
-      url={https://arxiv.org/abs/2607.25243}, 
+  title         = {{AuthentiCity}: A Multi-Source Provenance-Aware Knowledge Graph
+                   and Benchmark for 3D City Models},
+  author        = {Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
+  year          = {2026},
+  eprint        = {2607.25243},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.DB},
+  url           = {https://arxiv.org/abs/2607.25243}
 }
 ```
 
-AuthentiCity was built using our tool pykci - Python Knowledge Graph for Cities:
+The mapping pipeline is described in a companion system paper:
 
 ```bibtex
 @inproceedings{nguyen_pykci_2026,
-      title={{pykci}: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using {LLMs}},
-      author={Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
-      booktitle={Proceedings of the 34th ACM International Conference on Advances in Geographic Information Systems},
-      series={SIGSPATIAL '26},
-      year={2026},
-      month={nov},
-      location={Riverside, CA, USA},
-      publisher={Association for Computing Machinery},
-      address={New York, NY, USA},
-      isbn={979-8-4007-2950-8},
-      doi={10.1145/3841645.3843314},
-      url={https://doi.org/10.1145/3841645.3843314},
+  title     = {{pykci}: A Compact Urban Knowledge Graph for Semantic and
+               Spatial Queries using {LLMs}},
+  author    = {Huynh Duc An Son Nguyen and Lukas Arzoumanidis and Youness Dehbi},
+  booktitle = {Proceedings of the 34th ACM International Conference on Advances
+               in Geographic Information Systems},
+  series    = {SIGSPATIAL '26},
+  year      = {2026},
+  month     = {nov},
+  location  = {Riverside, CA, USA},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  isbn      = {979-8-4007-2950-8},
+  doi       = {10.1145/3841645.3843314},
+  url       = {https://doi.org/10.1145/3841645.3843314}
 }
 ```
 
-An archival DOI will accompany the camera-ready release.
+See [CITATION.cff](CITATION.cff) for the machine-readable form.
 
 ---
 
-## Contact
+## Contact and maintenance
 
-Corresponding author:
-Huynh Duc An Son Nguyen · `son.nguyen@hcu-hamburg.de` · HafenCity University Hamburg
+Corresponding author: Huynh Duc An Son Nguyen, <son.nguyen@hcu-hamburg.de>, Computational Methods Lab, HafenCity University Hamburg.
+
+Issues and questions: please open a GitHub issue on this repository. Versioning policy, planned extensions, and what a new dataset release does to the question suite are documented in [CHANGELOG.md](CHANGELOG.md) and in the maintenance section of [datasheet.md](datasheet.md).

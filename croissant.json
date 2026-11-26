@@ -46,10 +46,13 @@
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "name": "AuthentiCity",
   "alternateName": "AuthentiCity: Five Multi-Source, Provenance-Aware 3D City Knowledge Graphs",
-  "description": "A multi-source, provenance-aware 3D city knowledge graph spanning five cities on three continents (Hamburg, Helsinki, Zurich, New York, Tokyo): 179,571,139 nodes, 218,624,128 relationships, 1.18 billion properties and 3,583,114 buildings. Authoritative CityGML and cadastral city models are fused with OpenStreetMap, machine-learned roof-material predictions and reconstructed LoD3 facades into labeled property graphs in which every fact stays traceable to its source and derived information never replaces authoritative values. Cross-source correspondences are retained as confidence-weighted edges (overlap ratio, Jaccard, intersection area, 1:1/1:n/n:1/n:m case, primary flag) rather than collapsed into a single decision. Two benchmark families ship with the graphs: natural-language to Cypher (1,394 questions over 84 schema-grounded templates, nine categories, three languages, split by template into 1,024 public development and 370 held-out test questions) and graph representation learning under paired provenance-agnostic and provenance-aware protocols.",
+  "description": "A multi-source, provenance-aware 3D city knowledge graph spanning five cities on three continents (Hamburg, Helsinki, Zurich, New York, Tokyo): 179,571,139 nodes, 218,624,128 relationships, 1.18 billion properties and 3,583,114 buildings. Authoritative CityGML and cadastral city models are fused with OpenStreetMap, machine-learned roof-material predictions and reconstructed LoD3 facades into labeled property graphs in which every fact stays traceable to its source and derived information never replaces authoritative values. Cross-source correspondences are retained as confidence-weighted edges (overlap ratio, Jaccard, intersection area, 1:1/1:n/n:1/n:m case, primary flag) rather than collapsed into a single decision. Two benchmark families ship with the graphs: natural-language to Cypher (1,394 questions over 84 schema-grounded templates, nine categories, three languages, split by template into 1,024 public development and 370 held-out test questions) and graph representation learning under paired provenance-agnostic and provenance-aware protocols. License: the graph dumps are CC BY 4.0; the OpenStreetMap-derived content in them remains under ODbL 1.0, and each authoritative source layer under its provider's license (see DATA_LICENSES.md in the repository).",
   "version": "1.0.0",
   "datePublished": "2026-07-27",
-  "license": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "license": [
+    "https://creativecommons.org/licenses/by/4.0/",
+    "https://opendatacommons.org/licenses/odbl/1-0/"
+  ],
   "url": "https://github.com/hcu-cml/authenticity",
   "sameAs": "https://doi.org/10.5281/zenodo.21547211",
   "identifier": "https://doi.org/10.5281/zenodo.21547211",
